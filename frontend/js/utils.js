@@ -21,3 +21,12 @@ const SAFE_DISTANCE = 200;
 export function isDistanceBetweenCreaturesLowThanSearchable(item1, item2, dist = SAFE_DISTANCE) {
   return getDistanceBetweenCreatures(item1, item2) < dist;
 }
+
+export function mergeCreatures(item1, item2) {
+  const s1 = item1.width * item1.height;
+  const s2 = item2.width * item2.height
+  const k = Math.pow((s1 + s2) / s1, 0.5)
+  item1.width *= k;
+  item1.height *= k;
+  return item1;
+}

@@ -2,7 +2,7 @@ import { Hero } from "./creatures/hero";
 import { DummyEnemy, BASE_DUMMY_SIZE } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./controls";
-import { isDistanceBetweenCreaturesLowThanSearchable, ifCreaturesTouchEachOther, getCenterCoordinates } from "./utils";
+import { isDistanceBetweenCreaturesLowThanSearchable, ifCreaturesTouchEachOther, getCenterCoordinates, mergeCreatures } from "./utils";
 import { Bullet } from "./creatures/bullet";
 
 const score = document.querySelector(".score");
@@ -57,18 +57,18 @@ export class Game {
   }
 
   handleSmartEnemies() {
-    this.smartEnemies = this.smartEnemies.reduce((newArray, currentEnemy, index, smartArray) => {
-      currentEnemy.newPos(this.hero).update(this.ctx);
+    this.smartEnemies = this.smartEnemies.reduce((newArray, currentEnemy) => {
       if (newArray.some(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy))) {
         return newArray;
       }
-      if (smartArray.some(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy) && enemy !== currentEnemy)) {
-        currentEnemy.width *= 1.5;
-        currentEnemy.height *= 1.5;
+      const secondEnemy = this.smartEnemies.find(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy) && (enemy !== currentEnemy))
+      if (secondEnemy) {
+        currentEnemy = mergeCreatures(currentEnemy, secondEnemy)
       }
       newArray.push(currentEnemy);
       return newArray;
     }, []);
+    this.smartEnemies.forEach(currentEnemy => currentEnemy.newPos(this.hero).update(this.ctx))
   }
 
   handleHeroBullets() {
