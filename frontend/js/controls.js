@@ -1,23 +1,27 @@
-export function addHeroControls(hero, createBulletCallback) {
+export function addHeroControls(hero, createBullet) {
   const { dir, gunDir } = hero;
   document.addEventListener("keydown", event => {
     switch (event.keyCode) {
       case 38: {
+        hero.updateSpriteDirection(2);
         dir.y = gunDir.y = -1;
         dir.x = gunDir.x = 0;
         break;
       }
       case 39: {
+        hero.updateSpriteDirection(0);
         dir.y = gunDir.y = 0;
         dir.x = gunDir.x = 1;
         break;
       }
       case 40: {
+        hero.updateSpriteDirection(1);
         dir.y = gunDir.y = 1;
         dir.x = gunDir.x = 0;
         break;
       }
       case 37: {
+        hero.updateSpriteDirection(3);
         dir.x = gunDir.x = -1;
         dir.y = gunDir.y = 0;
         break;
@@ -28,7 +32,7 @@ export function addHeroControls(hero, createBulletCallback) {
         break;
       }
       case 32: {
-        createBulletCallback();
+        createBullet();
         break;
       }
       default:
@@ -37,7 +41,7 @@ export function addHeroControls(hero, createBulletCallback) {
   });
 }
 
-export function removeHeroControls() {}
+export function removeHeroControls() { }
 
 export function moveToAnotherSideIfGoBeyonceCanvas(ctx, item) {
   let FIELD_WIDTH = ctx.canvas.clientWidth;

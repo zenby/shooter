@@ -49,7 +49,7 @@ export class Game {
     this.handleSmartEnemies();
     this.handleHeroBullets();
     this.handleEnemiesDeath();
-    this.checkIfHeroDead();
+    this.handleHeroDeath();
   }
 
   handleDummyEnemies() {
@@ -84,7 +84,7 @@ export class Game {
     });
   }
 
-  checkIfHeroDead() {
+  handleHeroDeath() {
     const enemies = [...this.dummyEnemies, ...this.smartEnemies];
     if (enemies.some(enemy => ifCreaturesTouchEachOther(this.hero, enemy))) {
       setTimeout(() => {
@@ -132,7 +132,6 @@ export class Game {
     const direction = hero.dir.x === 0 && hero.dir.y === 0 ? hero.gunDir : hero.dir;
     const bullet = new bulletConstructor(this.ctx, heroX, heroY, direction.x, direction.y);
     bulletArray.push(bullet);
-    console.log(bulletArray);
   }
 
   generateRandomPositionAndDirection(hero, baseSize) {
