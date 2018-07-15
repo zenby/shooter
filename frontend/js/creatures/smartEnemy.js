@@ -1,7 +1,7 @@
 import { Creature } from "./creature";
 import { getCenterCoordinates, isDistanceBetweenCreaturesLowThanSearchable } from "../utils";
 
-const SPEED = 0.5;
+const SPEED = 1;
 const COLOR = "blue";
 export const BASE_SMART_SIZE = 16;
 
@@ -51,7 +51,7 @@ export class SmartEnemy extends Creature {
     const VISION_DISTANCE = 200;
     if (isDistanceBetweenCreaturesLowThanSearchable(hero, this, VISION_DISTANCE)) {
       const [heroX, heroY] = getCenterCoordinates(hero);
-      const angle = Math.atan2(heroX - this.x, heroY - this.y) + Math.PI;
+      const angle = Math.atan2(heroX - this.x - this.width / 2, heroY - this.y - this.height / 2) + Math.PI;
       this.dir.y = -Math.cos(angle);
       this.dir.x = -Math.sin(angle);
       this.showWarningMessage();
