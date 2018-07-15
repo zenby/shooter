@@ -46,8 +46,9 @@ export class Game {
     this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
     this.hero.newPos().update(this.ctx);
     this.handleDummyEnemies();
-    this.smartEnemies = this.handleSmartEnemies();
+    this.handleSmartEnemies();
     this.handleHeroBullets();
+    this.handleEnemiesDeath();
     this.checkIfHeroDead();
   }
 
@@ -56,7 +57,7 @@ export class Game {
   }
 
   handleSmartEnemies() {
-    return this.smartEnemies.reduce((newArray, currentEnemy, index, smartArray) => {
+    this.smartEnemies = this.smartEnemies.reduce((newArray, currentEnemy, index, smartArray) => {
       currentEnemy.newPos(this.hero).update(this.ctx);
       if (newArray.some(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy))) {
         return newArray;
@@ -91,6 +92,32 @@ export class Game {
         alert("You lose");
       }, 5);
     }
+  }
+
+  handleEnemiesDeath() {
+    const newSmartEnemies = [];
+    const newDummyEnemies = [];
+    const newBullets = [];
+    const allEnemies = [...this.smartEnemies, ...this.dummyEnemies]
+
+    this.smartEnemies.forEach(enemy => {
+      if (!this.heroBullets.some(bullet => ifCreaturesTouchEachOther(enemy, bullet))) {
+        newSmartEnemies.push(enemy)
+      }
+    })
+    this.dummyEnemies.forEach(enemy => {
+      if (!this.heroBullets.some(bullet => ifCreaturesTouchEachOther(enemy, bullet))) {
+        newDummyEnemies.push(enemy)
+      }
+    })
+    this.heroBullets.forEach(bullet => {
+      if (!allEnemies.some(enemy => ifCreaturesTouchEachOther(enemy, bullet))) {
+        newBullets.push(bullet)
+      }
+    })
+    this.smartEnemies = newSmartEnemies;
+    this.dummyEnemies = newDummyEnemies;
+    this.heroBullets = newBullets;
   }
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {

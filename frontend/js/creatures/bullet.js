@@ -2,7 +2,7 @@ import { Creature } from "./creature";
 
 const SPEED = 10;
 const COLOR = "orange";
-const SIZE = 6;
+const SIZE = 16;
 
 export class Bullet extends Creature {
   constructor(ctx, x, y, alfaX, alfaY, width = SIZE, height = SIZE, speed = SPEED, color = COLOR) {

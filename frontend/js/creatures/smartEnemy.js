@@ -1,7 +1,7 @@
 import { Creature } from "./creature";
 import { getCenterCoordinates, isDistanceBetweenCreaturesLowThanSearchable } from "../utils";
 
-const SPEED = 1;
+const SPEED = 0.1;
 const COLOR = "blue";
 export const BASE_SMART_SIZE = 16;
 
