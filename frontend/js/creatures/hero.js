@@ -14,6 +14,7 @@ export class Hero extends Creature {
       x: 1,
       y: 0
     };
+
     this.sprite = {
       baseX: 9,
       baseY: 2,
@@ -34,8 +35,8 @@ export class Hero extends Creature {
   }
 
   update(ctx) {
-    const { sprite } = this
-    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, this.x, this.y, this.width, this.height)
+    const { sprite, x, y, width, height } = this
+    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
     return this;
   }
 
