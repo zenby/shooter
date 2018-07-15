@@ -101,23 +101,39 @@ export class Game {
     const allEnemies = [...this.smartEnemies, ...this.dummyEnemies]
 
     this.smartEnemies.forEach(enemy => {
-      if (!this.heroBullets.some(bullet => ifCreaturesTouchEachOther(enemy, bullet))) {
+      if (!this.heroBullets.some(bullet => this.shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
         newSmartEnemies.push(enemy)
       }
     })
     this.dummyEnemies.forEach(enemy => {
-      if (!this.heroBullets.some(bullet => ifCreaturesTouchEachOther(enemy, bullet))) {
+      if (!this.heroBullets.some(bullet => this.shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
         newDummyEnemies.push(enemy)
       }
     })
     this.heroBullets.forEach(bullet => {
-      if (!allEnemies.some(enemy => ifCreaturesTouchEachOther(enemy, bullet))) {
+      if (!allEnemies.some(enemy => this.shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
         newBullets.push(bullet)
       }
     })
     this.smartEnemies = newSmartEnemies;
     this.dummyEnemies = newDummyEnemies;
     this.heroBullets = newBullets;
+  }
+
+  shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
+    const MIN_SIZE = 20;
+    const DAMAGE = 5;
+    const hasContact = ifCreaturesTouchEachOther(enemy, bullet)
+
+    if (hasContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
+      return true;
+    } else if (hasContact) {
+      enemy.width -= DAMAGE;
+      enemy.height -= DAMAGE;
+      return false
+    } else {
+      return false
+    }
   }
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {
