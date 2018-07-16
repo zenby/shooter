@@ -126,16 +126,17 @@ export class Game {
   }
 
   shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
-    const MIN_SIZE = 20;
-    const DAMAGE = 5;
+    const MIN_SIZE = 30;
+    const DAMAGE = 8;
     const isContact = ifUnitsTouchEachOther(enemy, bullet)
+
+    if (isContact) {
+      enemy.width -= DAMAGE;
+      enemy.height -= DAMAGE;
+    }
 
     if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
       return true;
-    } else if (isContact) {
-      enemy.width -= DAMAGE;
-      enemy.height -= DAMAGE;
-      return false
     } else {
       return false
     }
@@ -158,7 +159,7 @@ export class Game {
   generateRandomPositionAndDirection(hero, baseSize) {
     let x;
     let y;
-    const size = Math.random() * 10 + baseSize;
+    const size = Math.random() * 20 + baseSize;
     do {
       x = Math.random() * this.ctx.canvas.clientWidth;
       y = Math.random() * this.ctx.canvas.clientHeight;

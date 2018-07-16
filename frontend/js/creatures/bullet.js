@@ -1,7 +1,7 @@
 import { Unit } from "./unit";
 
-const SPEED = 30;
-const COLOR = "orange";
+const SPEED = 10;
+const COLOR = "black";
 const SIZE = 6;
 
 export class Bullet extends Unit {
@@ -12,6 +12,14 @@ export class Bullet extends Unit {
   newPos() {
     this.x += this.speed * this.dir.x;
     this.y += this.speed * this.dir.y;
+    return this;
+  }
+
+  update(ctx) {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, SIZE, 0, 2 * Math.PI, true);
+    ctx.fill();
     return this;
   }
 }
