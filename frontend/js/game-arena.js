@@ -28,8 +28,8 @@ export class Game {
 
   start() {
     const timer1 = setInterval(() => this.updateGame(), 10);
-    const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 200000);
-    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 600000);
+    const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 2000);
+    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 6000);
     const timer4 = setInterval(() => this.addBuffItem(), 12000);
     this.timers.push(timer1, timer2, timer3, timer4);
     addHeroControls(this.hero, () => this.addBullet());
@@ -54,7 +54,7 @@ export class Game {
     this.handleSmartEnemiesPosition();
     this.handleHeroBulletsPosition();
     this.handleEnemiesDeath();
-    this.handleHeroDeath();
+    !this.hero.isImmortal && this.handleHeroDeath();
     this.handleBuffs();
   }
 
@@ -134,6 +134,7 @@ export class Game {
   handleBuffs() {
     if (ifUnitsTouchEachOther(this.hero, this.buffItem)) {
       console.log('catched')
+      this.buffItem.activateBuff(this);
       this.buffItem = ''
     }
   }

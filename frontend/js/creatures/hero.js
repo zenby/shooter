@@ -14,6 +14,7 @@ export class Hero extends Unit {
       x: 1,
       y: 0
     };
+    this.isImmortal = false;
 
     this.sprite = {
       baseX: 9,

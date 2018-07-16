@@ -1,7 +1,7 @@
 import { Unit } from "./unit";
 import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils";
 
-const SPEED = 1;
+const SPEED = 0.6;
 const COLOR = "blue";
 export const BASE_SMART_SIZE = 16;
 const img = document.querySelector('.smart-enemy-sprite')

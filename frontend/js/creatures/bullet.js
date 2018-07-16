@@ -2,11 +2,11 @@ import { Unit } from "./unit";
 
 const SPEED = 10;
 const COLOR = "black";
-const SIZE = 6;
+let BULLET_SIZE = 6;
 
 export class Bullet extends Unit {
-  constructor(ctx, x, y, alfaX, alfaY, width = SIZE, height = SIZE, speed = SPEED, color = COLOR) {
-    super(ctx, width, height, color, x - SIZE / 2, y - SIZE / 2, alfaX, alfaY, speed);
+  constructor(ctx, x, y, alfaX, alfaY, width = BULLET_SIZE, height = BULLET_SIZE, speed = SPEED, color = COLOR) {
+    super(ctx, width, height, color, x - BULLET_SIZE / 2, y - BULLET_SIZE / 2, alfaX, alfaY, speed);
   }
 
   newPos() {
@@ -18,8 +18,16 @@ export class Bullet extends Unit {
   update(ctx) {
     ctx.beginPath();
     ctx.fillStyle = this.color;
-    ctx.arc(this.x, this.y, SIZE, 0, 2 * Math.PI, true);
+    ctx.arc(this.x, this.y, BULLET_SIZE, 0, 2 * Math.PI, true);
     ctx.fill();
     return this;
   }
+}
+
+export function growBullet(param = 2) {
+  BULLET_SIZE *= param;
+}
+
+export function shrinkBullet(param = 2) {
+  BULLET_SIZE /= param;
 }
