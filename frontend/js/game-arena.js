@@ -4,6 +4,8 @@ import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
 import { Bullet } from "./creatures/bullet";
+import { BuffItem } from './buffs/buff-item';
+import { RandomBuff } from './buffs/buff-generator';
 
 const score = document.querySelector(".score");
 
@@ -21,14 +23,16 @@ export class Game {
     this.smartEnemies = [];
     this.heroBullets = [];
     this.timers = [];
+    this.buffItem = '';
   }
 
   start() {
     const timer1 = setInterval(() => this.updateGame(), 10);
-    const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 2000);
-    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 60000);
-    this.timers.push(timer1, timer2, timer3);
-    addHeroControls(this.hero, () => this.addBullet(this.heroBullets, Bullet));
+    const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 200000);
+    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 600000);
+    const timer4 = setInterval(() => this.addBuffItem(), 12000);
+    this.timers.push(timer1, timer2, timer3, timer4);
+    addHeroControls(this.hero, () => this.addBullet());
   }
 
   updateGame() {
@@ -44,12 +48,14 @@ export class Game {
 
   updateCanvasState() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
+    this.buffItem && this.buffItem.draw(this.ctx);
     this.handleHeroPosition();
     this.handleDummyEnemiesPosition();
     this.handleSmartEnemiesPosition();
     this.handleHeroBulletsPosition();
     this.handleEnemiesDeath();
     this.handleHeroDeath();
+    this.handleBuffs();
   }
 
   handleHeroPosition() {
@@ -125,6 +131,13 @@ export class Game {
     }
   }
 
+  handleBuffs() {
+    if (ifUnitsTouchEachOther(this.hero, this.buffItem)) {
+      console.log('catched')
+      this.buffItem = ''
+    }
+  }
+
   shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
     const MIN_SIZE = 30;
     const DAMAGE = 8;
@@ -148,12 +161,19 @@ export class Game {
     enemyArray.push(enemy);
   }
 
-  addBullet(bulletArray, bulletConstructor) {
+  addBullet() {
     const [heroX, heroY] = getCenterCoordinates(this.hero);
     const { hero } = this;
     const direction = hero.dir.x === 0 && hero.dir.y === 0 ? hero.gunDir : hero.dir;
-    const bullet = new bulletConstructor(this.ctx, heroX, heroY, direction.x, direction.y);
-    bulletArray.push(bullet);
+    const bullet = new Bullet(this.ctx, heroX, heroY, direction.x, direction.y);
+    this.heroBullets.push(bullet);
+  }
+
+  addBuffItem() {
+    const size = 20;
+    const { x, y } = this.generateRandomPositionAndDirection(this.hero, 0);
+    const buffItem = new RandomBuff(this.ctx, size, size, x, y);
+    this.buffItem = buffItem;
   }
 
   generateRandomPositionAndDirection(hero, baseSize) {
