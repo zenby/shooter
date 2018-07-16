@@ -45,18 +45,18 @@ export class Game {
   updateState() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
     this.hero.newPos().update(this.ctx);
-    this.handleDummyEnemies();
-    this.handleSmartEnemies();
-    this.handleHeroBullets();
+    this.handleDummyEnemiesPosition();
+    this.handleSmartEnemiesPosition();
+    this.handleHeroBulletsPosition();
     this.handleEnemiesDeath();
     this.handleHeroDeath();
   }
 
-  handleDummyEnemies() {
+  handleDummyEnemiesPosition() {
     this.dummyEnemies.forEach(enemy => enemy.newPos().update(this.ctx));
   }
 
-  handleSmartEnemies() {
+  handleSmartEnemiesPosition() {
     this.smartEnemies = this.smartEnemies.reduce((newArray, currentEnemy) => {
       if (newArray.some(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy))) {
         return newArray;
@@ -71,7 +71,7 @@ export class Game {
     this.smartEnemies.forEach(currentEnemy => currentEnemy.newPos(this.hero).update(this.ctx))
   }
 
-  handleHeroBullets() {
+  handleHeroBulletsPosition() {
     let FIELD_WIDTH = this.ctx.canvas.clientWidth;
     let FIELD_HEIGHT = this.ctx.canvas.clientHeight;
     let isInsideCanvas;
