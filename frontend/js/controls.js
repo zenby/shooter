@@ -43,18 +43,18 @@ export function addHeroControls(hero, createBullet) {
 
 export function removeHeroControls() { }
 
-export function moveToAnotherSideIfGoBeyonceCanvas(ctx, item) {
+export function moveToAnotherSideIfGoBeyonceCanvas(ctx, unit) {
   let FIELD_WIDTH = ctx.canvas.clientWidth;
   let FIELD_HEIGHT = ctx.canvas.clientHeight;
 
-  if (item.x > FIELD_WIDTH) {
-    item.x = 0;
-  } else if (item.x < 0) {
-    item.x = FIELD_WIDTH;
+  if (unit.x > FIELD_WIDTH) {
+    unit.x = 0;
+  } else if (unit.x < 0) {
+    unit.x = FIELD_WIDTH;
   }
-  if (item.y > FIELD_HEIGHT) {
-    item.y = 0;
-  } else if (item.y < 0) {
-    item.y = FIELD_HEIGHT;
+  if (unit.y > FIELD_HEIGHT) {
+    unit.y = 0;
+  } else if (unit.y < 0) {
+    unit.y = FIELD_HEIGHT;
   }
 }

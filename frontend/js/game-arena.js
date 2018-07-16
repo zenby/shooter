@@ -2,7 +2,7 @@ import { Hero } from "./creatures/hero";
 import { DummyEnemy, BASE_DUMMY_SIZE } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./controls";
-import { isDistanceBetweenCreaturesLowThanSearchable, ifCreaturesTouchEachOther, getCenterCoordinates, mergeCreatures } from "./utils";
+import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
 import { Bullet } from "./creatures/bullet";
 
 const score = document.querySelector(".score");
@@ -24,16 +24,16 @@ export class Game {
   }
 
   start() {
-    const timer1 = setInterval(() => this.initializeGame(), 10);
+    const timer1 = setInterval(() => this.updateGame(), 10);
     const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 14000);
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 600);
     this.timers.push(timer1, timer2, timer3);
     addHeroControls(this.hero, () => this.addBullet(this.heroBullets, Bullet));
   }
 
-  initializeGame() {
-    this.updateState();
+  updateGame() {
     this.updateScore();
+    this.updateCanvasState();
   }
 
   updateScore() {
@@ -42,14 +42,18 @@ export class Game {
     score.innerHTML = value;
   }
 
-  updateState() {
+  updateCanvasState() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
-    this.hero.newPos().update(this.ctx);
+    this.handleHeroPosition();
     this.handleDummyEnemiesPosition();
     this.handleSmartEnemiesPosition();
     this.handleHeroBulletsPosition();
     this.handleEnemiesDeath();
     this.handleHeroDeath();
+  }
+
+  handleHeroPosition() {
+    this.hero.newPos().update(this.ctx);
   }
 
   handleDummyEnemiesPosition() {
@@ -58,12 +62,12 @@ export class Game {
 
   handleSmartEnemiesPosition() {
     this.smartEnemies = this.smartEnemies.reduce((newArray, currentEnemy) => {
-      if (newArray.some(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy))) {
+      if (newArray.some(enemy => ifUnitsTouchEachOther(enemy, currentEnemy))) {
         return newArray;
       }
-      const secondEnemy = this.smartEnemies.find(enemy => ifCreaturesTouchEachOther(enemy, currentEnemy) && (enemy !== currentEnemy))
+      const secondEnemy = this.smartEnemies.find(enemy => ifUnitsTouchEachOther(enemy, currentEnemy) && (enemy !== currentEnemy))
       if (secondEnemy) {
-        currentEnemy = mergeCreatures(currentEnemy, secondEnemy)
+        currentEnemy = mergeUnits(currentEnemy, secondEnemy)
       }
       newArray.push(currentEnemy);
       return newArray;
@@ -82,16 +86,6 @@ export class Game {
       }
       return isInsideCanvas;
     });
-  }
-
-  handleHeroDeath() {
-    const enemies = [...this.dummyEnemies, ...this.smartEnemies];
-    if (enemies.some(enemy => ifCreaturesTouchEachOther(this.hero, enemy, 5))) {
-      setTimeout(() => {
-        this.timers.map(timer => clearInterval(timer));
-        alert("You lose");
-      }, 5);
-    }
   }
 
   handleEnemiesDeath() {
@@ -120,14 +114,25 @@ export class Game {
     this.heroBullets = newBullets;
   }
 
+  handleHeroDeath() {
+    const DELTA = 5;
+    const enemies = [...this.dummyEnemies, ...this.smartEnemies];
+    if (enemies.some(enemy => ifUnitsTouchEachOther(this.hero, enemy, DELTA))) {
+      setTimeout(() => {
+        this.timers.map(timer => clearInterval(timer));
+        alert("You lose");
+      }, 5);
+    }
+  }
+
   shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
     const MIN_SIZE = 20;
     const DAMAGE = 5;
-    const hasContact = ifCreaturesTouchEachOther(enemy, bullet)
+    const isContact = ifUnitsTouchEachOther(enemy, bullet)
 
-    if (hasContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
+    if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
       return true;
-    } else if (hasContact) {
+    } else if (isContact) {
       enemy.width -= DAMAGE;
       enemy.height -= DAMAGE;
       return false
@@ -157,7 +162,7 @@ export class Game {
     do {
       x = Math.random() * this.ctx.canvas.clientWidth;
       y = Math.random() * this.ctx.canvas.clientHeight;
-    } while (isDistanceBetweenCreaturesLowThanSearchable(hero, { x, y, width: size, height: size }));
+    } while (!isDistanceBetweenUnitsMoreThanSafe(hero, { x, y, width: size, height: size }));
 
     const alfaX = Math.random() * 2 - 1;
     const alfaY = Math.random() * 2 - 1;

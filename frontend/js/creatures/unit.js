@@ -1,6 +1,6 @@
 import { moveToAnotherSideIfGoBeyonceCanvas } from "../controls";
 
-export class Creature {
+export class Unit {
   constructor(ctx, width, height, color, x, y, alfaX, alfaY, speed) {
     this.ctx = ctx;
     this.width = width;

@@ -1,4 +1,4 @@
-import { Creature } from "./creature";
+import { Unit } from "./unit";
 
 const SPEED = 1;
 const HEIGHT = 50;
@@ -7,7 +7,7 @@ const COLOR = "green";
 
 const img = document.querySelector('.hero-sprite')
 
-export class Hero extends Creature {
+export class Hero extends Unit {
   constructor(ctx, width = WIDTH, height = HEIGHT, color = COLOR, x = 50, y = 50, alfaX = 0, alfaY = 0, speed = SPEED) {
     super(ctx, width, height, color, x, y, alfaX, alfaY, speed);
     this.gunDir = {
