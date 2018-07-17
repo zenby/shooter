@@ -5,9 +5,10 @@ const SPEED = 0.6;
 const COLOR = "blue";
 export const BASE_SMART_SIZE = 16;
 const img = document.querySelector('.smart-enemy-sprite')
-const MESSAGE_PLACEMENT = {
+const MESSAGE = {
   x: 10,
-  y: 5
+  y: 5,
+  font: "13px Arial"
 }
 
 export class SmartEnemy extends Unit {
@@ -45,19 +46,35 @@ export class SmartEnemy extends Unit {
     return this;
   }
 
-  showWarningMessage(message) {
-    this.ctx.font = "13px Arial";
-    this.ctx.strokeText(message || "I see you", this.x + MESSAGE_PLACEMENT.x, this.y - MESSAGE_PLACEMENT.y);
+  showWarningMessage(text) {
+    this.ctx.font = MESSAGE.font;
+    this.ctx.strokeText(text, this.x + MESSAGE.x, this.y - MESSAGE.y);
   }
 
   updateDirection(hero) {
-    const VISION_DISTANCE = 200;
-    if (!isDistanceBetweenUnitsMoreThanSafe(hero, this, VISION_DISTANCE)) {
+    const fearParams = this.getFearParams(hero.isImmortal);
+    if (!isDistanceBetweenUnitsMoreThanSafe(hero, this, fearParams.distance)) {
       const [heroX, heroY] = getCenterCoordinates(hero);
       const angle = Math.atan2(heroX - this.x - this.width / 2, heroY - this.y - this.height / 2) + Math.PI;
-      this.dir.y = -Math.cos(angle);
-      this.dir.x = -Math.sin(angle);
-      this.showWarningMessage();
+      this.dir.y = fearParams.coefficient * Math.cos(angle);
+      this.dir.x = fearParams.coefficient * Math.sin(angle);
+      this.showWarningMessage(fearParams.message);
+    }
+  }
+
+  getFearParams(isFear) {
+    if (isFear) {
+      return {
+        distance: 300,
+        coefficient: 1,
+        message: 'You don\'t catch me!'
+      }
+    } else {
+      return {
+        distance: 200,
+        coefficient: -1,
+        message: 'I see you'
+      }
     }
   }
 }

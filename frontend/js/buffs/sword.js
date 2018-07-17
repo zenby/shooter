@@ -6,9 +6,9 @@ export class Sword extends BuffItem {
     super(ctx, width, height, x, y, type);
   }
 
-  activateBuff(gameObject) {
+  activateBuff(gameObject, time) {
     growBullet();
-    setTimeout(() => shrinkBullet(), 20000)
+    setTimeout(() => shrinkBullet(), time)
   }
 
 }

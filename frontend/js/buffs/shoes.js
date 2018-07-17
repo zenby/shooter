@@ -5,7 +5,7 @@ export class Shoes extends BuffItem {
     super(ctx, width, height, x, y, type);
   }
 
-  activateBuff(gameObject) {
+  activateBuff(gameObject, time) {
     const value = 2;
     gameObject.hero.speed *= value;
     const enemies = [...gameObject.smartEnemies, ...gameObject.dummyEnemies];
@@ -14,6 +14,6 @@ export class Shoes extends BuffItem {
     setTimeout(() => {
       gameObject.hero.speed /= value;
       enemies.forEach(enemy => enemy.speed *= value);
-    }, 20000)
+    }, time)
   }
 }

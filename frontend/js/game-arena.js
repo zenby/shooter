@@ -54,7 +54,7 @@ export class Game {
     this.handleSmartEnemiesPosition();
     this.handleHeroBulletsPosition();
     this.handleEnemiesDeath();
-    !this.hero.isImmortal && this.handleHeroDeath();
+    this.handleHeroDeath();
     this.handleBuffs();
   }
 
@@ -121,20 +121,22 @@ export class Game {
   }
 
   handleHeroDeath() {
-    const DELTA = 5;
-    const enemies = [...this.dummyEnemies, ...this.smartEnemies];
-    if (enemies.some(enemy => ifUnitsTouchEachOther(this.hero, enemy, DELTA))) {
-      setTimeout(() => {
-        this.timers.map(timer => clearInterval(timer));
-        alert("You lose");
-      }, 5);
+    if (!this.hero.isImmortal) {
+      const DELTA = 5;
+      const enemies = [...this.dummyEnemies, ...this.smartEnemies];
+      if (enemies.some(enemy => ifUnitsTouchEachOther(this.hero, enemy, DELTA))) {
+        setTimeout(() => {
+          this.timers.map(timer => clearInterval(timer));
+          alert("You lose");
+        }, 5);
+      }
     }
   }
 
   handleBuffs() {
     if (ifUnitsTouchEachOther(this.hero, this.buffItem)) {
-      console.log('catched')
-      this.buffItem.activateBuff(this);
+      const TIME = 20000;
+      this.buffItem.activateBuff(this, TIME);
       this.buffItem = ''
     }
   }

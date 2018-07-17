@@ -19,7 +19,7 @@ export class DummyEnemy extends Unit {
       baseX: 0,
       baseY: 0,
       x: 0,
-      y: this.getSpriteLayer(this.dir.x, this.dir.y) * 16,
+      y: this.getSpriteLayerValue(this.dir.x, this.dir.y) * 16,
       width: 16,
       height: 16,
       deltaX: 16,
@@ -41,7 +41,7 @@ export class DummyEnemy extends Unit {
     return this;
   }
 
-  getSpriteLayer(x, y) {
+  getSpriteLayerValue(x, y) {
     if (Math.abs(x) > Math.abs(y)) {
       return x > 0 ? SPRITE_LAYER.right : SPRITE_LAYER.left;
     } else {

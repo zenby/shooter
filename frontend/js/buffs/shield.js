@@ -5,8 +5,8 @@ export class Shield extends BuffItem {
     super(ctx, width, height, x, y, type);
   }
 
-  activateBuff(gameObject) {
+  activateBuff(gameObject, time) {
     gameObject.hero.isImmortal = true;
-    setTimeout(() => gameObject.hero.isImmortal = false, 20000)
+    setTimeout(() => gameObject.hero.isImmortal = false, time)
   }
 }

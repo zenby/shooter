@@ -15,6 +15,6 @@ const buffTypes = [{
 
 export function RandomBuff(ctx, width, height, x, y) {
   const buffType = buffTypes[~~(Math.random() * 3)]
-  const constructor = buffType.constructor
-  return new constructor(ctx, width, height, x, y, buffType.selector);
+  const buff = buffType.constructor
+  return new buff(ctx, width, height, x, y, buffType.selector);
 };

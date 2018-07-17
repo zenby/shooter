@@ -41,7 +41,7 @@ export class Hero extends Unit {
     return this;
   }
 
-  updateSpriteDirection(verticalLayer) {
-    this.sprite.x = this.sprite.baseX + verticalLayer * this.sprite.deltaX
+  updateSpriteDirection(spriteLayer) {
+    this.sprite.x = this.sprite.baseX + spriteLayer * this.sprite.deltaX
   }
 }
