@@ -1,11 +1,12 @@
 import { Hero } from "./creatures/hero";
-import { DummyEnemy, BASE_DUMMY_SIZE } from "./creatures/dummyEnemy";
+import { DummyEnemy, BASE_DUMMY_SIZE, SPEED as DUMMY_SPEAD } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
 import { Bullet, BULLET } from "./creatures/bullet";
-import { RandomBuff } from './buffs/buff-generator';
+import { RandomBuff } from './items/buff-generator';
 import { initializeGame, sendResultToDatabase } from './main';
+import { Landscape } from './items/landscape';
 
 const scoreLabel = document.querySelector(".score");
 
@@ -19,12 +20,14 @@ export class Game {
     this.canvas.height = 700;
     this.ctx = this.canvas.getContext("2d");
     this.hero = new Hero(this.ctx);
+    this.landscape = new Landscape(this.ctx, 40, 40, this.ctx.canvas.clientWidth, this.ctx.canvas.clientWidth)
     this.dummyEnemies = [];
     this.smartEnemies = [];
     this.heroBullets = [];
     this.timers = [];
     this.lvl = 1;
     this.buffItem = '';
+    this.landscape.draw(this.ctx);
     this.handleHeroPosition();
   }
 
@@ -34,7 +37,7 @@ export class Game {
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
     const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
     const timer5 = setInterval(() => this.addBuffItem(), 12000);
-    const timer6 = setInterval(() => console.log('lvlup'), 14000)
+    const timer6 = setInterval(() => this.lvlUp(), 10000)
     this.timers.push(timer1, timer2, timer3, timer4, timer5, timer6);
     addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
   }
@@ -57,6 +60,7 @@ export class Game {
 
   updateCanvasState() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
+    this.landscape.draw(this.ctx);
     this.handleHeroPosition();
     this.handleBuffItemPosition();
     this.handleDummyEnemiesPosition();
@@ -135,7 +139,7 @@ export class Game {
 
   handleHeroDeath() {
     if (!this.hero.isImmortal) {
-      const DELTA = 5;
+      const DELTA = 10;
       const enemies = [...this.dummyEnemies, ...this.smartEnemies];
       if (enemies.some(enemy => ifUnitsTouchEachOther(this.hero, enemy, DELTA))) {
         this.finishGame();
@@ -157,6 +161,13 @@ export class Game {
       this.buffItem.activateBuff(this, BUFF_TIME);
       this.buffItem = ''
     }
+  }
+
+  lvlUp() {
+    this.addEnemyPride(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE);
+    this.addEnemyPride(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
+    this.lvl++;
+    console.log(this.lvl);
   }
 
   shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
@@ -187,7 +198,7 @@ export class Game {
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
-    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
+    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + 0.15 * this.lvl);
     enemyArray.push(enemy);
   }
 
@@ -196,7 +207,7 @@ export class Game {
     const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
     enemyArray.push(enemy);
     for (let i = 0; i < this.lvl; i++) {
-      const { size, x, y } = this.generateRandomPositionAndDirection(enemy, baseSize, 50);
+      const { size, x, y } = this.generateRandomPositionAndDirection(enemy, baseSize, true, 100);
       const newEnemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
       enemyArray.push(newEnemy);
     }
@@ -216,14 +227,17 @@ export class Game {
     this.buffItem = buffItem;
   }
 
-  generateRandomPositionAndDirection(hero, baseSize) {
+  generateRandomPositionAndDirection(hero, baseSize, isInsideCircle = false, distance = 200) {
     let x;
     let y;
-    const size = Math.random() * 20 + baseSize;
+    const size = Math.random() * 20 + baseSize + this.lvl * 5;
+    let condition;
     do {
       x = Math.random() * this.ctx.canvas.clientWidth;
       y = Math.random() * this.ctx.canvas.clientHeight;
-    } while (!isDistanceBetweenUnitsMoreThanSafe(hero, { x, y, width: size, height: size }));
+      const newUnit = { x, y, width: size, height: size };
+      condition = isDistanceBetweenUnitsMoreThanSafe(hero, newUnit, distance);
+    } while (isInsideCircle ? condition : !condition);
 
     const alfaX = Math.random() * 2 - 1;
     const alfaY = Math.random() * 2 - 1;

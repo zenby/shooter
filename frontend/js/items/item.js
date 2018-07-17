@@ -1,5 +1,5 @@
 
-export class BuffItem {
+export class Item {
   constructor(ctx, width, height, x, y, selector) {
     this.ctx = ctx;
     this.width = width;

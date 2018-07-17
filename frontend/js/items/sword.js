@@ -1,7 +1,7 @@
-import { BuffItem } from './buff-item';
+import { Item } from './item';
 import { growBullet, shrinkBullet } from '../creatures/bullet';
 
-export class Sword extends BuffItem {
+export class Sword extends Item {
   constructor(ctx, width, height, x, y, type) {
     super(ctx, width, height, x, y, type);
   }
@@ -10,5 +10,4 @@ export class Sword extends BuffItem {
     growBullet();
     setTimeout(() => shrinkBullet(), time)
   }
-
 }

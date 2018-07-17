@@ -6,7 +6,7 @@ export function addHeroControls(hero, createBullet) {
 }
 
 function subscribeToShoot(createBullet) {
-  canvas.addEventListener('mousedown', event => {
+  canvas.addEventListener('mousemove', event => {
     createBullet(event.offsetX, event.offsetY);
   })
 }
@@ -64,7 +64,7 @@ function changeSpeedIfHeroChangedDirection(previousKeyCode, newKeyCode, hero) {
 
 export function moveToAnotherSideIfGoBeyonceCanvas(ctx, unit) {
   let FIELD_WIDTH = ctx.canvas.clientWidth;
-  let FIELD_HEIGHT = ctx.canvas.clientHeight;
+  let FIELD_HEIGHT = ctx.canvas.clientWidth;
 
   if (unit.x > FIELD_WIDTH) {
     unit.x = 0;

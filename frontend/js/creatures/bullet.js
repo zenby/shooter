@@ -3,9 +3,9 @@ import { Unit } from "./unit";
 const SPEED = 10;
 const COLOR = "black";
 export const BULLET = {
-  size: 6,
-  damage: 20,
-  speedDecrease: 0.15
+  size: 5,
+  damage: 2,
+  speedDecrease: 0.03
 }
 
 export class Bullet extends Unit {

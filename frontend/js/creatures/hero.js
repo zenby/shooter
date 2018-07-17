@@ -83,7 +83,7 @@ export function increaseHeroVelocityByBuff(buff = 2) {
 }
 
 export function decreaseHeroVelocityByDebuff(deBuff = 2) {
-  velocity.speed *= deBuff;
-  velocity.acceleration *= deBuff;
-  velocity.maxAccelerationTime *= deBuff;
+  velocity.speed /= deBuff;
+  velocity.acceleration /= deBuff;
+  velocity.maxAccelerationTime /= deBuff;
 }

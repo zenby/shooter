@@ -1,6 +1,6 @@
-import { BuffItem } from './buff-item';
+import { Item } from './item';
 
-export class Shield extends BuffItem {
+export class Shield extends Item {
   constructor(ctx, width, height, x, y, type) {
     super(ctx, width, height, x, y, type);
   }

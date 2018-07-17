@@ -1,6 +1,6 @@
 import { Unit } from "./unit";
 
-const SPEED = 0.5;
+export const SPEED = 0.8;
 
 export const BASE_DUMMY_SIZE = 25;
 const img = document.querySelector('.dummy-enemy-sprite');

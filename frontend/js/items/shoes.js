@@ -1,7 +1,7 @@
-import { BuffItem } from './buff-item';
+import { Item } from './item';
 import { increaseHeroVelocityByBuff, decreaseHeroVelocityByDebuff } from '../creatures/hero';
 
-export class Shoes extends BuffItem {
+export class Shoes extends Item {
   constructor(ctx, width, height, x, y, type) {
     super(ctx, width, height, x, y, type);
   }
@@ -13,6 +13,7 @@ export class Shoes extends BuffItem {
     enemies.forEach(enemy => enemy.speed /= value);
 
     setTimeout(() => {
+      console.log('speed fixed back')
       decreaseHeroVelocityByDebuff();
       enemies.forEach(enemy => enemy.speed *= value);
     }, time)
