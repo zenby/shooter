@@ -23,6 +23,7 @@ export class SmartEnemy extends Unit {
       deltaX: 16,
       deltaY: 16
     }
+    this.defense = 0;
   }
 
   setNextSprite() {
@@ -78,11 +79,14 @@ export class SmartEnemy extends Unit {
   }
 
   eat(unit) {
+    const defenseIncrease = 3;
     const s1 = this.width * this.height;
     const s2 = unit.width * unit.height
     const k = Math.pow((s1 + s2) / s1, 0.5)
     this.width *= k;
     this.height *= k;
+    this.defense = Math.max(this.defense, unit.defense) += defenseIncrease;
+    this.speed = this.speed > SPEED ? this.speed += 0.1 : SPEED;
     this.x = (this.x * s1 + unit.x * s2) / (s1 + s2);
     this.y = (this.y * s1 + unit.y * s2) / (s1 + s2);
   }

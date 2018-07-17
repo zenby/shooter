@@ -3,7 +3,7 @@ import { DummyEnemy, BASE_DUMMY_SIZE } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
-import { Bullet } from "./creatures/bullet";
+import { Bullet, BULLET } from "./creatures/bullet";
 import { RandomBuff } from './buffs/buff-generator';
 import { initializeGame, sendResultToDatabase } from './main';
 
@@ -171,13 +171,14 @@ export class Game {
   }
 
   damageUnit(unit) {
-    const DAMAGE = 20;
-    const SPEED_DECREASE = 0.15;
-    const s = unit.width * unit.height;
-    const k = (s - DAMAGE) / s;
+    const minDamage = 4;
+    const { damage, speedDecrease } = BULLET;
+    const mass = unit.width * unit.height;
+    const heroDamage = damage - unit.defense > 0 ? damage - unit.defense : minDamage;
+    const k = (mass - heroDamage) / mass;
     unit.width *= k;
     unit.height *= k;
-    unit.speed > SPEED_DECREASE ? unit.speed -= SPEED_DECREASE : 0;
+    unit.speed > speedDecrease ? unit.speed -= speedDecrease : 0;
     return unit;
   }
 
