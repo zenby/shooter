@@ -6,7 +6,8 @@ let BULLET_SIZE = 6;
 
 export class Bullet extends Unit {
   constructor(ctx, x, y, alfaX, alfaY, width = BULLET_SIZE, height = BULLET_SIZE, speed = SPEED, color = COLOR) {
-    super(ctx, width, height, color, x - BULLET_SIZE / 2, y - BULLET_SIZE / 2, alfaX, alfaY, speed);
+    super(ctx, width, height, x - BULLET_SIZE / 2, y - BULLET_SIZE / 2, alfaX, alfaY, speed);
+    this.color = color
   }
 
   newPos() {

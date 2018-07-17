@@ -2,7 +2,6 @@ import { Unit } from "./unit";
 import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils";
 
 const SPEED = 0.6;
-const COLOR = "blue";
 export const BASE_SMART_SIZE = 16;
 const img = document.querySelector('.smart-enemy-sprite')
 const MESSAGE = {
@@ -12,8 +11,8 @@ const MESSAGE = {
 }
 
 export class SmartEnemy extends Unit {
-  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED, color = COLOR) {
-    super(ctx, width, height, color, x, y, alfaX, alfaY, speed);
+  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED) {
+    super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.sprite = {
       baseX: 0,
       baseY: 0,

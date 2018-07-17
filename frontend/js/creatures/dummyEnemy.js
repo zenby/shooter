@@ -1,7 +1,6 @@
 import { Unit } from "./unit";
 
 const SPEED = 2;
-const COLOR = "red";
 
 export const BASE_DUMMY_SIZE = 25;
 const img = document.querySelector('.dummy-enemy-sprite');
@@ -13,8 +12,8 @@ const SPRITE_LAYER = {
 }
 
 export class DummyEnemy extends Unit {
-  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED, color = COLOR) {
-    super(ctx, width, height, color, x, y, alfaX, alfaY, speed);
+  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED) {
+    super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.sprite = {
       baseX: 0,
       baseY: 0,

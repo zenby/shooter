@@ -28,8 +28,8 @@ export class Game {
 
   start() {
     const timer1 = setInterval(() => this.updateGame(), 10);
-    const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 2000);
-    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 6000);
+    const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 200000);
+    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 600000);
     const timer4 = setInterval(() => this.addBuffItem(), 12000);
     this.timers.push(timer1, timer2, timer3, timer4);
     addHeroControls(this.hero, () => this.addBullet());
@@ -142,13 +142,11 @@ export class Game {
   }
 
   shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
-    const MIN_SIZE = 30;
-    const DAMAGE = 8;
+    const MIN_SIZE = 25;
     const isContact = ifUnitsTouchEachOther(enemy, bullet)
 
     if (isContact) {
-      enemy.width -= DAMAGE;
-      enemy.height -= DAMAGE;
+      enemy = this.damageUnit(enemy)
     }
 
     if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
@@ -156,6 +154,15 @@ export class Game {
     } else {
       return false
     }
+  }
+
+  damageUnit(unit) {
+    const DAMAGE = 8;
+    const s = unit.width * unit.height;
+    const k = (s - DAMAGE) / s;
+    unit.width *= k;
+    unit.height *= k;
+    return unit;
   }
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {
