@@ -5,7 +5,7 @@ import { addHeroControls } from "./controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
 import { Bullet } from "./creatures/bullet";
 import { RandomBuff } from './buffs/buff-generator';
-import { initializeGame } from './main';
+import { initializeGame, sendResultToDatabase } from './main';
 
 const scoreLabel = document.querySelector(".score");
 
@@ -143,7 +143,9 @@ export class Game {
 
   finishGame() {
     this.timers.map(timer => clearInterval(timer));
-    prompt("You lose, your score is " + scoreLabel.innerText, 'User');
+    const score = scoreLabel.innerText;
+    const name = prompt("You lose, your score is " + score, 'User');
+    sendResultToDatabase(score, name || 'User');
     setTimeout(() => initializeGame(), 10);
   }
 
