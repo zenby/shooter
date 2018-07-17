@@ -1,6 +1,8 @@
 export function addHeroControls(hero, createBullet) {
   const { dir, gunDir } = hero;
+  let previousKeyCode = 38;
   document.addEventListener("keydown", event => {
+    previousKeyCode = changeSpeedIfHeroChangedDirection(previousKeyCode, event.keyCode, hero);
     switch (event.keyCode) {
       case 38: {
         hero.updateSpriteDirection(2);
@@ -41,7 +43,15 @@ export function addHeroControls(hero, createBullet) {
   });
 }
 
-export function removeHeroControls() { }
+function changeSpeedIfHeroChangedDirection(previousKeyCode, newKeyCode, hero) {
+  if (previousKeyCode !== newKeyCode) {
+    hero.makeHeroSpeedParamsDefault();
+    hero.setNewSpeedTimer();
+    return newKeyCode;
+  } else {
+    return previousKeyCode;
+  }
+}
 
 export function moveToAnotherSideIfGoBeyonceCanvas(ctx, unit) {
   let FIELD_WIDTH = ctx.canvas.clientWidth;

@@ -3,8 +3,11 @@ import { Unit } from "./unit";
 const SPEED = 1;
 const HEIGHT = 50;
 const WIDTH = 30;
+const ACCELERATION = 0.0005;
+const MAX_ACCELERATION_TIME = 3000;
 
-const img = document.querySelector('.hero-sprite')
+const img = document.querySelector('.hero-sprite');
+const speedSpan = document.querySelector('.speed');
 
 export class Hero extends Unit {
   constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 0, alfaY = 0, speed = SPEED) {
@@ -14,6 +17,8 @@ export class Hero extends Unit {
       y: 0
     };
     this.isImmortal = false;
+    this.accelerationStartTime = 0;
+    this.currentAccelerationTimer = '';
 
     this.sprite = {
       baseX: 9,
@@ -35,6 +40,7 @@ export class Hero extends Unit {
   }
 
   update(ctx) {
+    speedSpan.innerHTML = ~~(this.speed * 100) / 100;
     const { sprite, x, y, width, height } = this
     ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
     return this;
@@ -42,5 +48,25 @@ export class Hero extends Unit {
 
   updateSpriteDirection(spriteLayer) {
     this.sprite.x = this.sprite.baseX + spriteLayer * this.sprite.deltaX
+  }
+
+  makeHeroSpeedParamsDefault() {
+    if (this.currentAccelerationTimer) {
+      clearInterval(this.currentAccelerationTimer)
+    }
+    this.speed = SPEED;
+    this.accelerationStartTime = 0;
+  }
+
+  setNewSpeedTimer() {
+    const startSpeed = this.speed;
+    this.accelerationStartTime = 0;
+    this.currentAccelerationTimer = setInterval(() => {
+      this.accelerationStartTime += 50;
+      this.speed = startSpeed + ACCELERATION * this.accelerationStartTime;
+      if (this.accelerationStartTime >= MAX_ACCELERATION_TIME) {
+        clearInterval(this.currentAccelerationTimer)
+      }
+    }, 50);
   }
 }
