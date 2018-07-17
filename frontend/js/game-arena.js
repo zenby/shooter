@@ -32,7 +32,7 @@ export class Game {
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 600000);
     const timer4 = setInterval(() => this.addBuffItem(), 12000);
     this.timers.push(timer1, timer2, timer3, timer4);
-    addHeroControls(this.hero, () => this.addBullet());
+    addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
   }
 
   updateGame() {
@@ -171,11 +171,10 @@ export class Game {
     enemyArray.push(enemy);
   }
 
-  addBullet() {
+  addBullet(x, y) {
     const [heroX, heroY] = getCenterCoordinates(this.hero);
-    const { hero } = this;
-    const direction = hero.dir.x === 0 && hero.dir.y === 0 ? hero.gunDir : hero.dir;
-    const bullet = new Bullet(this.ctx, heroX, heroY, direction.x, direction.y);
+    const angle = Math.atan2(heroX - x, heroY - y) + Math.PI;
+    const bullet = new Bullet(this.ctx, heroX, heroY, Math.sin(angle), Math.cos(angle));
     this.heroBullets.push(bullet);
   }
 
