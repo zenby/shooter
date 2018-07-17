@@ -1,10 +1,12 @@
 import { Unit } from "./unit";
 
-const SPEED = 1;
+const velocity = {
+  speed: 1,
+  acceleration: 0.0005,
+  maxAccelerationTime: 3000
+}
 const HEIGHT = 50;
 const WIDTH = 30;
-const ACCELERATION = 0.0005;
-const MAX_ACCELERATION_TIME = 3000;
 const SPRITE_LAYER = {
   top: 2,
   left: 3,
@@ -16,7 +18,7 @@ const img = document.querySelector('.hero-sprite');
 const speedLabel = document.querySelector('.speed');
 
 export class Hero extends Unit {
-  constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 0, alfaY = 0, speed = SPEED) {
+  constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 0, alfaY = 0, speed = velocity.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.isImmortal = false;
     this.accelerationStartTime = 0;
@@ -57,7 +59,7 @@ export class Hero extends Unit {
     if (this.currentAccelerationTimer) {
       clearInterval(this.currentAccelerationTimer)
     }
-    this.speed = SPEED;
+    this.speed = velocity.speed;
     this.accelerationStartTime = 0;
   }
 
@@ -66,10 +68,22 @@ export class Hero extends Unit {
     this.accelerationStartTime = 0;
     this.currentAccelerationTimer = setInterval(() => {
       this.accelerationStartTime += 50;
-      this.speed = startSpeed + ACCELERATION * this.accelerationStartTime;
-      if (this.accelerationStartTime >= MAX_ACCELERATION_TIME) {
+      this.speed = startSpeed + velocity.acceleration * this.accelerationStartTime;
+      if (this.accelerationStartTime >= velocity.maxAccelerationTime) {
         clearInterval(this.currentAccelerationTimer)
       }
     }, 50);
   }
+}
+
+export function increaseHeroVelocityByBuff(buff = 2) {
+  velocity.speed *= buff;
+  velocity.acceleration *= buff;
+  velocity.maxAccelerationTime *= buff;
+}
+
+export function decreaseHeroVelocityByDebuff(deBuff = 2) {
+  velocity.speed *= deBuff;
+  velocity.acceleration *= deBuff;
+  velocity.maxAccelerationTime *= deBuff;
 }

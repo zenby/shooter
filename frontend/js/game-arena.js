@@ -174,7 +174,8 @@ export class Game {
     const minDamage = 4;
     const { damage, speedDecrease } = BULLET;
     const mass = unit.width * unit.height;
-    const heroDamage = damage - unit.defense > 0 ? damage - unit.defense : minDamage;
+    const defense = unit.defense || 0;
+    const heroDamage = damage - defense > 0 ? damage - defense : minDamage;
     const k = (mass - heroDamage) / mass;
     unit.width *= k;
     unit.height *= k;

@@ -1,4 +1,5 @@
 import { BuffItem } from './buff-item';
+import { increaseHeroVelocityByBuff, decreaseHeroVelocityByDebuff } from '../creatures/hero';
 
 export class Shoes extends BuffItem {
   constructor(ctx, width, height, x, y, type) {
@@ -6,13 +7,13 @@ export class Shoes extends BuffItem {
   }
 
   activateBuff(gameObject, time) {
-    const value = 2;
-    gameObject.hero.speed *= value;
+    const value = 5;
+    increaseHeroVelocityByBuff();
     const enemies = [...gameObject.smartEnemies, ...gameObject.dummyEnemies];
     enemies.forEach(enemy => enemy.speed /= value);
 
     setTimeout(() => {
-      gameObject.hero.speed /= value;
+      decreaseHeroVelocityByDebuff();
       enemies.forEach(enemy => enemy.speed *= value);
     }, time)
   }

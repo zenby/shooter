@@ -31,8 +31,12 @@ export class Bullet extends Unit {
 
 export function growBullet(param = 2) {
   BULLET.size *= param;
+  BULLET.damage *= param;
+  BULLET.speedDecrease *= param;
 }
 
 export function shrinkBullet(param = 2) {
   BULLET.size /= param;
+  BULLET.damage /= param;
+  BULLET.speedDecrease /= param;
 }
