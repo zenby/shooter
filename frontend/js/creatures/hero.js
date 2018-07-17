@@ -5,6 +5,12 @@ const HEIGHT = 50;
 const WIDTH = 30;
 const ACCELERATION = 0.0005;
 const MAX_ACCELERATION_TIME = 3000;
+const SPRITE_LAYER = {
+  top: 2,
+  left: 3,
+  right: 0,
+  bottom: 1
+}
 
 const img = document.querySelector('.hero-sprite');
 const speedSpan = document.querySelector('.speed');
@@ -46,8 +52,8 @@ export class Hero extends Unit {
     return this;
   }
 
-  updateSpriteDirection(spriteLayer) {
-    this.sprite.x = this.sprite.baseX + spriteLayer * this.sprite.deltaX
+  updateSpriteDirection(direction) {
+    this.sprite.x = this.sprite.baseX + SPRITE_LAYER[direction] * this.sprite.deltaX
   }
 
   makeHeroSpeedParamsDefault() {

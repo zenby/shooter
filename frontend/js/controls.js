@@ -18,25 +18,25 @@ function subsribeToMove(hero) {
     previousKeyCode = changeSpeedIfHeroChangedDirection(previousKeyCode, event.keyCode, hero);
     switch (event.keyCode) {
       case 38: {
-        hero.updateSpriteDirection(2);
+        hero.updateSpriteDirection('top');
         dir.y = -1;
         dir.x = 0;
         break;
       }
       case 39: {
-        hero.updateSpriteDirection(0);
+        hero.updateSpriteDirection('right');
         dir.y = 0;
         dir.x = 1;
         break;
       }
       case 40: {
-        hero.updateSpriteDirection(1);
+        hero.updateSpriteDirection('bottom');
         dir.y = 1;
         dir.x = 0;
         break;
       }
       case 37: {
-        hero.updateSpriteDirection(3);
+        hero.updateSpriteDirection('left');
         dir.x = -1;
         dir.y = 0;
         break;
