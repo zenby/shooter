@@ -14,6 +14,8 @@ const watchify = require('watchify');
 const plumber = require('gulp-plumber');
 const assign = require('lodash.assign');
 const browserify = require('browserify');
+const ghpages = require('gh-pages');
+const path = require('path');
 
 gulp.task("clean", function () {
   return del("public");
@@ -79,3 +81,7 @@ gulp.task("serve", function () {
 });
 
 gulp.task("dev", gulp.series("build", gulp.parallel("watch", "serve")));
+
+gulp.task('deploy', function (cb) {
+  ghpages.publish(path.join(process.cwd(), 'public'), cb);
+});
