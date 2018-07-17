@@ -23,6 +23,7 @@ export class Game {
     this.smartEnemies = [];
     this.heroBullets = [];
     this.timers = [];
+    this.lvl = 1;
     this.buffItem = '';
     this.handleHeroPosition();
   }
@@ -33,7 +34,8 @@ export class Game {
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
     const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
     const timer5 = setInterval(() => this.addBuffItem(), 12000);
-    this.timers.push(timer1, timer2, timer3, timer4, timer5);
+    const timer6 = setInterval(() => console.log('lvlup'), 14000)
+    this.timers.push(timer1, timer2, timer3, timer4, timer5, timer6);
     addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
   }
 
@@ -187,6 +189,17 @@ export class Game {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
     const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
     enemyArray.push(enemy);
+  }
+
+  addEnemyPride(enemyArray, creatureConstructor, baseSize) {
+    const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
+    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
+    enemyArray.push(enemy);
+    for (let i = 0; i < this.lvl; i++) {
+      const { size, x, y } = this.generateRandomPositionAndDirection(enemy, baseSize, 50);
+      const newEnemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
+      enemyArray.push(newEnemy);
+    }
   }
 
   addBullet(x, y) {
