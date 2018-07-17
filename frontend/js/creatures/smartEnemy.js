@@ -55,8 +55,8 @@ export class SmartEnemy extends Unit {
     if (!isDistanceBetweenUnitsMoreThanSafe(hero, this, fearParams.distance)) {
       const [heroX, heroY] = getCenterCoordinates(hero);
       const angle = Math.atan2(heroX - this.x - this.width / 2, heroY - this.y - this.height / 2) + Math.PI;
-      this.dir.y = fearParams.coefficient * Math.cos(angle);
-      this.dir.x = fearParams.coefficient * Math.sin(angle);
+      this.dir.y = fearParams.isFear * Math.cos(angle);
+      this.dir.x = fearParams.isFear * Math.sin(angle);
       this.showWarningMessage(fearParams.message);
     }
   }
@@ -65,15 +65,25 @@ export class SmartEnemy extends Unit {
     if (isFear) {
       return {
         distance: 300,
-        coefficient: 1,
+        isFear: 1,
         message: 'You don\'t catch me!'
       }
     } else {
       return {
         distance: 200,
-        coefficient: -1,
+        isFear: -1,
         message: 'I see you'
       }
     }
+  }
+
+  eat(unit) {
+    const s1 = this.width * this.height;
+    const s2 = unit.width * unit.height
+    const k = Math.pow((s1 + s2) / s1, 0.5)
+    this.width *= k;
+    this.height *= k;
+    this.x = (this.x * s1 + unit.x * s2) / (s1 + s2);
+    this.y = (this.y * s1 + unit.y * s2) / (s1 + s2);
   }
 }

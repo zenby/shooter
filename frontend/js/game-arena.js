@@ -84,7 +84,7 @@ export class Game {
       }
       const secondEnemy = this.smartEnemies.find(enemy => ifUnitsTouchEachOther(enemy, currentEnemy) && (enemy !== currentEnemy))
       if (secondEnemy) {
-        currentEnemy = mergeUnits(currentEnemy, secondEnemy)
+        currentEnemy.eat(secondEnemy);
       }
       newArray.push(currentEnemy);
       return newArray;
