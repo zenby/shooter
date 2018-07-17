@@ -1,6 +1,6 @@
 import { Unit } from "./unit";
 
-const SPEED = 2;
+const SPEED = 0.5;
 
 export const BASE_DUMMY_SIZE = 25;
 const img = document.querySelector('.dummy-enemy-sprite');
@@ -24,14 +24,14 @@ export class DummyEnemy extends Unit {
       deltaX: 16,
       deltaY: 16
     }
+  }
 
-    setInterval(() => {
-      if (this.sprite.x < 16) {
-        this.sprite.x += this.sprite.deltaX;
-      } else {
-        this.sprite.x = this.sprite.baseX;
-      }
-    }, 200)
+  setNextSprite() {
+    if (this.sprite.x < 16) {
+      this.sprite.x += this.sprite.deltaX;
+    } else {
+      this.sprite.x = this.sprite.baseX;
+    }
   }
 
   update(ctx) {
@@ -47,5 +47,6 @@ export class DummyEnemy extends Unit {
       return y > 0 ? SPRITE_LAYER.bottom : SPRITE_LAYER.top;
     }
   }
+
 }
 

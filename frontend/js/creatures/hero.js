@@ -13,15 +13,11 @@ const SPRITE_LAYER = {
 }
 
 const img = document.querySelector('.hero-sprite');
-const speedSpan = document.querySelector('.speed');
+const speedLabel = document.querySelector('.speed');
 
 export class Hero extends Unit {
   constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 0, alfaY = 0, speed = SPEED) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
-    this.gunDir = {
-      x: 1,
-      y: 0
-    };
     this.isImmortal = false;
     this.accelerationStartTime = 0;
     this.currentAccelerationTimer = '';
@@ -36,17 +32,18 @@ export class Hero extends Unit {
       deltaX: 32,
       deltaY: 32
     }
-    setInterval(() => {
-      if (this.sprite.y < 96) {
-        this.sprite.y += this.sprite.deltaY
-      } else {
-        this.sprite.y = this.sprite.baseY;
-      }
-    }, 200)
+  }
+
+  setNextSprite() {
+    if (this.sprite.y < 96) {
+      this.sprite.y += this.sprite.deltaY
+    } else {
+      this.sprite.y = this.sprite.baseY;
+    }
   }
 
   update(ctx) {
-    speedSpan.innerHTML = ~~(this.speed * 100) / 100;
+    speedLabel.innerHTML = ~~(this.speed * 100) / 100;
     const { sprite, x, y, width, height } = this
     ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
     return this;

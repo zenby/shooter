@@ -23,14 +23,14 @@ export class SmartEnemy extends Unit {
       deltaX: 16,
       deltaY: 16
     }
+  }
 
-    setInterval(() => {
-      if (this.sprite.x < 48) {
-        this.sprite.x += this.sprite.deltaX
-      } else {
-        this.sprite.x = this.sprite.baseX;
-      }
-    }, 200)
+  setNextSprite() {
+    if (this.sprite.x < 48) {
+      this.sprite.x += this.sprite.deltaX
+    } else {
+      this.sprite.x = this.sprite.baseX;
+    }
   }
 
   newPos(hero) {

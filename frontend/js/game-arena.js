@@ -4,10 +4,10 @@ import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
 import { Bullet } from "./creatures/bullet";
-import { BuffItem } from './buffs/buff-item';
 import { RandomBuff } from './buffs/buff-generator';
+import { initializeGame } from './main';
 
-const score = document.querySelector(".score");
+const scoreLabel = document.querySelector(".score");
 
 export class Game {
   constructor(canvas) {
@@ -24,6 +24,7 @@ export class Game {
     this.heroBullets = [];
     this.timers = [];
     this.buffItem = '';
+    this.handleHeroPosition();
   }
 
   start() {
@@ -31,7 +32,8 @@ export class Game {
     const timer2 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
     const timer4 = setInterval(() => this.addBuffItem(), 12000);
-    this.timers.push(timer1, timer2, timer3, timer4);
+    const timer5 = setInterval(() => this.updateSprites(), 200);
+    this.timers.push(timer1, timer2, timer3, timer4, timer5);
     addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
   }
 
@@ -43,13 +45,18 @@ export class Game {
   updateScore() {
     this.currentTime = this.currentTime + 10;
     const value = (this.currentTime - this.startTime) / 1000;
-    score.innerHTML = value;
+    scoreLabel.innerHTML = value;
+  }
+
+  updateSprites() {
+    const sprites = [this.hero, ...this.dummyEnemies, ...this.smartEnemies];
+    sprites.forEach(sprite => sprite.setNextSprite());
   }
 
   updateCanvasState() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
-    this.buffItem && this.buffItem.draw(this.ctx);
     this.handleHeroPosition();
+    this.handleBuffItemPosition();
     this.handleDummyEnemiesPosition();
     this.handleSmartEnemiesPosition();
     this.handleHeroBulletsPosition();
@@ -60,6 +67,10 @@ export class Game {
 
   handleHeroPosition() {
     this.hero.newPos().update(this.ctx);
+  }
+
+  handleBuffItemPosition() {
+    this.buffItem && this.buffItem.draw(this.ctx);
   }
 
   handleDummyEnemiesPosition() {
@@ -128,6 +139,7 @@ export class Game {
         setTimeout(() => {
           this.timers.map(timer => clearInterval(timer));
           alert("You lose");
+          initializeGame();
         }, 5);
       }
     }
@@ -135,8 +147,8 @@ export class Game {
 
   handleBuffs() {
     if (ifUnitsTouchEachOther(this.hero, this.buffItem)) {
-      const TIME = 20000;
-      this.buffItem.activateBuff(this, TIME);
+      const BUFF_TIME = 20000;
+      this.buffItem.activateBuff(this, BUFF_TIME);
       this.buffItem = ''
     }
   }
@@ -157,11 +169,13 @@ export class Game {
   }
 
   damageUnit(unit) {
-    const DAMAGE = 16;
+    const DAMAGE = 20;
+    const SPEED_DECREASE = 0.15;
     const s = unit.width * unit.height;
     const k = (s - DAMAGE) / s;
     unit.width *= k;
     unit.height *= k;
+    unit.speed > SPEED_DECREASE ? unit.speed -= SPEED_DECREASE : 0;
     return unit;
   }
 
