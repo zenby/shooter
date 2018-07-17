@@ -85,7 +85,7 @@ export class SmartEnemy extends Unit {
     const k = Math.pow((s1 + s2) / s1, 0.5)
     this.width *= k;
     this.height *= k;
-    this.defense = Math.max(this.defense, unit.defense) += defenseIncrease;
+    this.defense = Math.max(this.defense, unit.defense) + defenseIncrease;
     this.speed = this.speed > SPEED ? this.speed += 0.1 : SPEED;
     this.x = (this.x * s1 + unit.x * s2) / (s1 + s2);
     this.y = (this.y * s1 + unit.y * s2) / (s1 + s2);
