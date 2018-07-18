@@ -1,17 +1,14 @@
 import { Unit } from "./unit";
 import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils/geometry";
+import { initialParams } from '../constants';
 
-const SPEED = 0.6;
-export const BASE_SMART_SIZE = 16;
+const { smartEnemyParams } = initialParams;
+
+export const BASE_SMART_SIZE = smartEnemyParams.size;
 const img = document.querySelector('.smart-enemy-sprite')
-const MESSAGE = {
-  x: 10,
-  y: 5,
-  font: "13px Arial"
-}
 
 export class SmartEnemy extends Unit {
-  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED) {
+  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = smartEnemyParams.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.sprite = {
       baseX: 0,
@@ -47,8 +44,9 @@ export class SmartEnemy extends Unit {
   }
 
   showWarningMessage(text) {
-    this.ctx.font = MESSAGE.font;
-    this.ctx.strokeText(text, this.x + MESSAGE.x, this.y - MESSAGE.y);
+    const { message } = smartEnemyParams;
+    this.ctx.font = message.font;
+    this.ctx.strokeText(text, this.x + message.x, this.y - message.y);
   }
 
   updateDirection(hero) {
@@ -63,14 +61,15 @@ export class SmartEnemy extends Unit {
   }
 
   eat(unit) {
-    const defenseIncrease = 3;
+    const { defenseIncrease, speedIncrease } = smartEnemyParams;
+    const defaultSpeed = smartEnemyParams.speed;
     const s1 = this.width * this.height;
     const s2 = unit.width * unit.height
     const k = Math.pow((s1 + s2) / s1, 0.5)
     this.width *= k;
     this.height *= k;
     this.defense = Math.max(this.defense, unit.defense) + defenseIncrease;
-    this.speed = this.speed > SPEED ? this.speed += 0.1 : SPEED;
+    this.speed = this.speed > defaultSpeed ? this.speed += speedIncrease : defaultSpeed;
     this.x = (this.x * s1 + unit.x * s2) / (s1 + s2);
     this.y = (this.y * s1 + unit.y * s2) / (s1 + s2);
   }

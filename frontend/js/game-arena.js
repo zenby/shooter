@@ -5,7 +5,7 @@ import { addHeroControls } from "./utils/controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
-import { initializeGame, sendResultToDatabase, updateLevel } from './main';
+import { initializeGame, updateLevel, showLoseMessage } from './main';
 import { Landscape } from './items/landscape';
 import { damageUnit } from './utils/effects';
 
@@ -144,20 +144,22 @@ export class Game {
   }
 
   finishGame() {
+    this.clearPreviousGameState();
+    showLoseMessage();
+    setTimeout(() => initializeGame(), 200);
+  }
+
+  clearPreviousGameState() {
     this.timers.map(timer => clearInterval(timer));
     this.hero.currentBuffs.map(buff => clearInterval(buff.timer));
     this.hero = new Hero(this.ctx);
     makeBulletDefault();
-    const score = scoreLabel.innerText;
-    const name = prompt("You lose, your score is " + score, 'User');
-    sendResultToDatabase(+score, name || 'User');
-    setTimeout(() => initializeGame(), 200);
   }
+
 
   handleBuffs() {
     if (ifUnitsTouchEachOther(this.hero, this.buffItem)) {
-      const BUFF_TIME = 20000;
-      this.buffItem.activateBuff(this, BUFF_TIME);
+      this.buffItem.activateBuff(this);
       this.buffItem = ''
     }
   }

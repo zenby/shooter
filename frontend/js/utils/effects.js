@@ -1,4 +1,7 @@
 import { currentBullet } from '../creatures/bullet'
+import { initialParams } from '../constants';
+
+const { buffParams } = initialParams;
 
 export function damageUnit(unit) {
   const { speedDecrease } = currentBullet;
@@ -34,7 +37,7 @@ function addBuffTimerToHero(hero, id) {
   const buff = hero.currentBuffs.find(buff => id === buff.id)
   buff.timer = setInterval(() => {
     buff.time += 1;
-    if (buff.time >= 20) {
+    if (buff.time >= buffParams.buffTime / 1000) {
       clearInterval(buff.timer);
       hero.currentBuffs.shift();
     }

@@ -1,15 +1,12 @@
 import { Unit } from "./unit";
+import { initialParams } from '../constants';
 
-export const SPEED = 0.8;
+const { dummyEnemyParams } = initialParams;
 
-export const BASE_DUMMY_SIZE = 25;
+export const SPEED = dummyEnemyParams.speed;
+export const BASE_DUMMY_SIZE = dummyEnemyParams.size;
+
 const img = document.querySelector('.dummy-enemy-sprite');
-const SPRITE_LAYER = {
-  top: 3,
-  left: 1,
-  right: 0,
-  bottom: 2
-}
 
 export class DummyEnemy extends Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED) {
@@ -41,12 +38,11 @@ export class DummyEnemy extends Unit {
   }
 
   getSpriteLayerValue(x, y) {
+    const { spriteLayer } = dummyEnemyParams
     if (Math.abs(x) > Math.abs(y)) {
-      return x > 0 ? SPRITE_LAYER.right : SPRITE_LAYER.left;
+      return x > 0 ? spriteLayer.right : spriteLayer.left;
     } else {
-      return y > 0 ? SPRITE_LAYER.bottom : SPRITE_LAYER.top;
+      return y > 0 ? spriteLayer.bottom : spriteLayer.top;
     }
   }
-
 }
-

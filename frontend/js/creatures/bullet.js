@@ -1,21 +1,16 @@
 import { Unit } from "./unit";
+import { initialParams } from '../constants';
 
-const SPEED = 10;
-const COLOR = "black";
-const DEFAULT_BULLET = {
-  size: 5,
-  damage: 20,
-  speedDecrease: 0.10
-}
+const { bulletParams } = initialParams;
 
 export const currentBullet = {
-  size: DEFAULT_BULLET.size,
-  damage: DEFAULT_BULLET.damage,
-  speedDecrease: DEFAULT_BULLET.speedDecrease
+  size: bulletParams.size,
+  damage: bulletParams.damage,
+  speedDecrease: bulletParams.speedDecrease
 };
 
 export class Bullet extends Unit {
-  constructor(ctx, x, y, alfaX, alfaY, width = currentBullet.size, height = currentBullet.size, speed = SPEED, color = COLOR) {
+  constructor(ctx, x, y, alfaX, alfaY, width = currentBullet.size, height = currentBullet.size, speed = bulletParams.speed, color = bulletParams.color) {
     super(ctx, width, height, x - currentBullet.size / 2, y - currentBullet.size / 2, alfaX, alfaY, speed);
     this.color = color
   }
@@ -35,20 +30,20 @@ export class Bullet extends Unit {
   }
 }
 
-export function growBullet(param = 2) {
+export function growBullet(param = bulletParams.growAfterBuff) {
   currentBullet.size *= param;
   currentBullet.damage *= param;
   currentBullet.speedDecrease *= param;
 }
 
-export function shrinkBullet(param = 2) {
+export function shrinkBullet(param = bulletParams.growAfterBuff) {
   currentBullet.size /= param;
   currentBullet.damage /= param;
   currentBullet.speedDecrease /= param;
 }
 
 export function makeBulletDefault() {
-  currentBullet.size = DEFAULT_BULLET.size;
-  currentBullet.damage = DEFAULT_BULLET.damage;
-  currentBullet.speedDecrease = DEFAULT_BULLET.speedDecrease;
+  currentBullet.size = bulletParams.size;
+  currentBullet.damage = bulletParams.damage;
+  currentBullet.speedDecrease = bulletParams.speedDecrease;
 }

@@ -1,24 +1,19 @@
 import { Unit } from "./unit";
+import { initialParams } from '../constants';
+
+const { heroParams, buffParams } = initialParams;
 
 const velocity = {
   speed: 1,
   acceleration: 0.0005,
   maxAccelerationTime: 3000
 }
-const HEIGHT = 50;
-const WIDTH = 30;
-const SPRITE_LAYER = {
-  top: 2,
-  left: 3,
-  right: 0,
-  bottom: 1
-}
 
 const img = document.querySelector('.hero-sprite');
 const speedLabel = document.querySelector('.speed');
 
 export class Hero extends Unit {
-  constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 1, alfaY = 0, speed = velocity.speed) {
+  constructor(ctx, width = heroParams.width, height = heroParams.height, x = heroParams.posX, y = heroParams.posY, alfaX = 1, alfaY = 0, speed = velocity.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.isImmortal = false;
     this.accelerationStartTime = 0;
@@ -53,7 +48,7 @@ export class Hero extends Unit {
   }
 
   updateSpriteDirection(direction) {
-    this.sprite.x = this.sprite.baseX + SPRITE_LAYER[direction] * this.sprite.deltaX
+    this.sprite.x = this.sprite.baseX + heroParams.spriteLayer[direction] * this.sprite.deltaX
   }
 
   makeHeroSpeedParamsDefault() {
@@ -77,21 +72,22 @@ export class Hero extends Unit {
   }
 
   drawBuffs(ctx) {
+    const allTime = buffParams.buffTime / 1000;
     this.currentBuffs.forEach((buff, index) => {
       ctx.fillStyle = buff.type;
-      ctx.fillRect(this.x, this.y - 10 - index * 10, this.width * (20 - buff.time) / 20, 7);
+      ctx.fillRect(this.x, this.y - 10 - index * 10, this.width * (allTime - buff.time) / allTime, 7);
     })
     return this;
   }
 }
 
-export function increaseHeroVelocityByBuff(buff = 2) {
+export function increaseHeroVelocityByBuff(buff = buffParams.speedGrowth) {
   velocity.speed *= buff;
   velocity.acceleration *= buff;
   velocity.maxAccelerationTime *= buff;
 }
 
-export function decreaseHeroVelocityByDebuff(deBuff = 2) {
+export function decreaseHeroVelocityByDebuff(deBuff = buffParams.speedGrowth) {
   velocity.speed /= deBuff;
   velocity.acceleration /= deBuff;
   velocity.maxAccelerationTime /= deBuff;

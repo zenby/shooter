@@ -49,3 +49,10 @@ export function getTop10(data) {
   const array = Object.values(data);
   return array.sort((a, b) => a.score < b.score);
 }
+
+
+export function showLoseMessage() {
+  const score = scoreLabel.innerText;
+  const name = prompt("Sorry, but you lose, your score is " + score, 'User');
+  sendResultToDatabase(+score, name || 'User');
+}
