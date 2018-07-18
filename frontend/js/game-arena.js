@@ -38,7 +38,7 @@ export class Game {
     const timer2 = setInterval(() => this.updateSprites(), 200);
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
     const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
-    const timer5 = setInterval(() => this.addBuffItem(), 12000);
+    const timer5 = setInterval(() => this.addBuffItem(), 8000);
     const timer6 = setInterval(() => this.lvlUp(), 10000)
     this.timers.push(timer1, timer2, timer3, timer4, timer5, timer6);
     addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
@@ -81,7 +81,7 @@ export class Game {
   }
 
   handleHeroPosition() {
-    this.hero.newPos().update(this.ctx);
+    this.hero.newPos().update(this.ctx).drawBuffs(this.ctx);
   }
 
   handleBuffItemPosition() {
@@ -145,6 +145,7 @@ export class Game {
 
   finishGame() {
     this.timers.map(timer => clearInterval(timer));
+    this.hero.currentBuffsbuff(buff => clearInterval(buff.timer));
     const score = scoreLabel.innerText;
     const name = prompt("You lose, your score is " + score, 'User');
     sendResultToDatabase(score, name || 'User');

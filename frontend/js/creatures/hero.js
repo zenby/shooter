@@ -23,6 +23,7 @@ export class Hero extends Unit {
     this.isImmortal = false;
     this.accelerationStartTime = 0;
     this.currentAccelerationTimer = '';
+    this.currentBuffs = []
 
     this.sprite = {
       baseX: 9,
@@ -73,6 +74,14 @@ export class Hero extends Unit {
         clearInterval(this.currentAccelerationTimer)
       }
     }, 50);
+  }
+
+  drawBuffs(ctx) {
+    this.currentBuffs.forEach((buff, index) => {
+      ctx.fillStyle = buff.type;
+      ctx.fillRect(this.x, this.y - 10 - index * 5, this.width * (20 - buff.time) / 20, 5);
+    })
+    return this;
   }
 }
 
