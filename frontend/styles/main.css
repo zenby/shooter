@@ -12,13 +12,21 @@ canvas {
     cursor: url("Aim.ico"), pointer;
 }
 
-.score {
+.score-container {
+    position: absolute;
+    top: 60px;
+    left: 20px    
+}
+.speed-container {
+    position: absolute;
+    top: 80px;
+    left: 20px    
+}
+.level-container {
     position: absolute;
     top: 20px;
     left: 20px    
 }
-.speed {
-    position: absolute;
-    top: 40px;
-    left: 20px    
+.level-container span {
+    font-size: 30px;
 }

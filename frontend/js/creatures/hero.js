@@ -79,7 +79,7 @@ export class Hero extends Unit {
   drawBuffs(ctx) {
     this.currentBuffs.forEach((buff, index) => {
       ctx.fillStyle = buff.type;
-      ctx.fillRect(this.x, this.y - 10 - index * 5, this.width * (20 - buff.time) / 20, 5);
+      ctx.fillRect(this.x, this.y - 10 - index * 10, this.width * (20 - buff.time) / 20, 7);
     })
     return this;
   }

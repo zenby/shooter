@@ -5,7 +5,7 @@ import { addHeroControls } from "./utils/controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
-import { initializeGame, sendResultToDatabase } from './main';
+import { initializeGame, sendResultToDatabase, updateLevel } from './main';
 import { Landscape } from './items/landscape';
 import { damageUnit } from './utils/effects';
 
@@ -51,7 +51,7 @@ export class Game {
 
   updateScore() {
     this.currentTime = this.currentTime + 10;
-    const value = (this.currentTime - this.startTime) / 1000;
+    const value = (this.currentTime - this.startTime);
     scoreLabel.innerHTML = value;
   }
 
@@ -150,8 +150,8 @@ export class Game {
     makeBulletDefault();
     const score = scoreLabel.innerText;
     const name = prompt("You lose, your score is " + score, 'User');
-    sendResultToDatabase(score, name || 'User');
-    setTimeout(() => initializeGame(), 10);
+    sendResultToDatabase(+score, name || 'User');
+    setTimeout(() => initializeGame(), 200);
   }
 
   handleBuffs() {
@@ -166,7 +166,7 @@ export class Game {
     this.addEnemyStack(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE);
     this.addEnemyStack(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
     this.lvl++;
-    console.log(this.lvl);
+    updateLevel(this.lvl);
   }
 
   shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
