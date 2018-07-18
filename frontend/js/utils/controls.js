@@ -6,7 +6,7 @@ export function addHeroControls(hero, createBullet) {
 }
 
 function subscribeToShoot(createBullet) {
-  canvas.addEventListener('mousemove', event => {
+  canvas.addEventListener('click', event => {
     createBullet(event.offsetX, event.offsetY);
   })
 }
@@ -62,18 +62,4 @@ function changeSpeedIfHeroChangedDirection(previousKeyCode, newKeyCode, hero) {
   }
 }
 
-export function moveToAnotherSideIfGoBeyonceCanvas(ctx, unit) {
-  let FIELD_WIDTH = ctx.canvas.clientWidth;
-  let FIELD_HEIGHT = ctx.canvas.clientWidth;
 
-  if (unit.x > FIELD_WIDTH) {
-    unit.x = 0;
-  } else if (unit.x < 0) {
-    unit.x = FIELD_WIDTH;
-  }
-  if (unit.y > FIELD_HEIGHT) {
-    unit.y = 0;
-  } else if (unit.y < 0) {
-    unit.y = FIELD_HEIGHT;
-  }
-}

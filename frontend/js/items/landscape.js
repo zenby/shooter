@@ -1,11 +1,11 @@
 
 export class Landscape {
-  constructor(ctx, width, height, canvasWidth, canvasHeight) {
+  constructor(ctx, width, height) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
+    this.canvasWidth = ctx.canvas.clientWidth;
+    this.canvasHeight = ctx.canvas.clientWidth;
     this.sprite = {
       x: 0,
       y: 0,

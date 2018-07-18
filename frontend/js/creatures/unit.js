@@ -1,4 +1,4 @@
-import { moveToAnotherSideIfGoBeyonceCanvas } from "../controls";
+import { moveToAnotherSideIfGoBeyonceCanvas } from "../utils/geometry";
 
 export class Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed) {

@@ -25,10 +25,40 @@ export function isDistanceBetweenUnitsMoreThanSafe(unit1, unit2, dist = SAFE_DIS
 }
 
 export function mergeUnits(unit1, unit2) {
-  const s1 = unit1.width * unit1.height;
-  const s2 = unit2.width * unit2.height
-  const k = Math.pow((s1 + s2) / s1, 0.5)
+  const mass1 = unit1.width * unit1.height;
+  const mass2 = unit2.width * unit2.height
+  const k = Math.pow((mass1 + mass2) / mass1, 0.5)
   unit1.width *= k;
   unit1.height *= k;
   return unit1;
+}
+
+export function moveToAnotherSideIfGoBeyonceCanvas(ctx, unit) {
+  let width = ctx.canvas.clientWidth;
+  let height = ctx.canvas.clientHeight;
+
+  if (unit.x > width) {
+    unit.x = 0;
+  } else if (unit.x < 0) {
+    unit.x = width;
+  }
+  if (unit.y > height) {
+    unit.y = 0;
+  } else if (unit.y < 0) {
+    unit.y = height;
+  }
+}
+
+export function getElementsInsideCanvas(ctx, units) {
+  const width = ctx.canvas.clientWidth;
+  const height = ctx.canvas.clientHeight;
+
+  let isInsideCanvas;
+  return units.filter(unit => {
+    isInsideCanvas = unit.x < width && unit.x > 0 && unit.y < height && unit.y > 0;
+    if (isInsideCanvas) {
+      unit.newPos().update(ctx);
+    }
+    return isInsideCanvas;
+  });
 }

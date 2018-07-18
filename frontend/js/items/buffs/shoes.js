@@ -1,5 +1,5 @@
 import { Item } from './item';
-import { increaseHeroVelocityByBuff, decreaseHeroVelocityByDebuff } from '../creatures/hero';
+import { increaseHeroVelocityByBuff, decreaseHeroVelocityByDebuff } from '../../creatures/hero';
 
 export class Shoes extends Item {
   constructor(ctx, width, height, x, y, type) {

@@ -1,38 +1,40 @@
 import { Hero } from "./creatures/hero";
 import { DummyEnemy, BASE_DUMMY_SIZE, SPEED as DUMMY_SPEAD } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
-import { addHeroControls } from "./controls";
-import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, mergeUnits } from "./utils";
-import { Bullet, BULLET } from "./creatures/bullet";
-import { RandomBuff } from './items/buff-generator';
+import { addHeroControls } from "./utils/controls";
+import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
+import { Bullet } from "./creatures/bullet";
+import { RandomBuff } from './items/buffs/buff-generator';
 import { initializeGame, sendResultToDatabase } from './main';
 import { Landscape } from './items/landscape';
+import { damageUnit } from './utils/effects';
 
 const scoreLabel = document.querySelector(".score");
 
 export class Game {
   constructor(canvas) {
     this.canvas = canvas;
-    this.startTime = Date.now();
-    this.currentTime = Date.now();
-
     this.canvas.width = 700;
     this.canvas.height = 700;
     this.ctx = this.canvas.getContext("2d");
+
+    this.startTime = Date.now();
+    this.currentTime = Date.now();
+
     this.hero = new Hero(this.ctx);
-    this.landscape = new Landscape(this.ctx, 40, 40, this.ctx.canvas.clientWidth, this.ctx.canvas.clientWidth)
+    this.landscape = new Landscape(this.ctx, 40, 40)
     this.dummyEnemies = [];
     this.smartEnemies = [];
     this.heroBullets = [];
     this.timers = [];
     this.lvl = 1;
     this.buffItem = '';
-    this.landscape.draw(this.ctx);
+
     this.handleHeroPosition();
   }
 
   start() {
-    const timer1 = setInterval(() => this.updateGame(), 10);
+    const timer1 = setInterval(() => this.updateGameState(), 10);
     const timer2 = setInterval(() => this.updateSprites(), 200);
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
     const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
@@ -42,7 +44,7 @@ export class Game {
     addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
   }
 
-  updateGame() {
+  updateGameState() {
     this.updateScore();
     this.updateCanvasState();
   }
@@ -59,16 +61,23 @@ export class Game {
   }
 
   updateCanvasState() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
-    this.landscape.draw(this.ctx);
+    this.clearCanvas(this.ctx);
     this.handleHeroPosition();
     this.handleBuffItemPosition();
     this.handleDummyEnemiesPosition();
     this.handleSmartEnemiesPosition();
-    this.handleHeroBulletsPosition();
+    this.heroBullets = getElementsInsideCanvas(this.ctx, this.heroBullets);
     this.handleEnemiesDeath();
     this.handleHeroDeath();
     this.handleBuffs();
+  }
+
+  clearCanvas(ctx) {
+    ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+  }
+
+  drawLandscape() {
+    this.landscape.draw(this.ctx);
   }
 
   handleHeroPosition() {
@@ -96,19 +105,6 @@ export class Game {
       return newArray;
     }, []);
     this.smartEnemies.forEach(currentEnemy => currentEnemy.newPos(this.hero).update(this.ctx))
-  }
-
-  handleHeroBulletsPosition() {
-    let FIELD_WIDTH = this.ctx.canvas.clientWidth;
-    let FIELD_HEIGHT = this.ctx.canvas.clientHeight;
-    let isInsideCanvas;
-    this.heroBullets = this.heroBullets.filter(bullet => {
-      isInsideCanvas = bullet.x < FIELD_WIDTH && bullet.x > 0 && bullet.y < FIELD_HEIGHT && bullet.y > 0;
-      if (isInsideCanvas) {
-        bullet.newPos().update(this.ctx);
-      }
-      return isInsideCanvas;
-    });
   }
 
   handleEnemiesDeath() {
@@ -164,8 +160,8 @@ export class Game {
   }
 
   lvlUp() {
-    this.addEnemyPride(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE);
-    this.addEnemyPride(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
+    this.addEnemyStack(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE);
+    this.addEnemyStack(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
     this.lvl++;
     console.log(this.lvl);
   }
@@ -174,7 +170,7 @@ export class Game {
     const MIN_SIZE = 25;
     const isContact = ifUnitsTouchEachOther(enemy, bullet)
     if (isContact) {
-      enemy = this.damageUnit(enemy)
+      enemy = damageUnit(enemy)
     }
     if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
       return true;
@@ -183,26 +179,13 @@ export class Game {
     }
   }
 
-  damageUnit(unit) {
-    const minDamage = 4;
-    const { damage, speedDecrease } = BULLET;
-    const mass = unit.width * unit.height;
-    const defense = unit.defense || 0;
-    const heroDamage = damage - defense > 0 ? damage - defense : minDamage;
-    const k = (mass - heroDamage) / mass;
-    unit.width *= k;
-    unit.height *= k;
-    unit.speed > speedDecrease ? unit.speed -= speedDecrease : 0;
-    return unit;
-  }
-
   addEnemy(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
     const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + 0.15 * this.lvl);
     enemyArray.push(enemy);
   }
 
-  addEnemyPride(enemyArray, creatureConstructor, baseSize) {
+  addEnemyStack(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
     const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
     enemyArray.push(enemy);

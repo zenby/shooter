@@ -1,5 +1,5 @@
 import { Unit } from "./unit";
-import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils";
+import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils/geometry";
 
 const SPEED = 0.6;
 export const BASE_SMART_SIZE = 16;

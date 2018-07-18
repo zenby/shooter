@@ -4,8 +4,8 @@ const SPEED = 10;
 const COLOR = "black";
 export const BULLET = {
   size: 5,
-  damage: 2,
-  speedDecrease: 0.03
+  damage: 20,
+  speedDecrease: 0.10
 }
 
 export class Bullet extends Unit {
