@@ -1,7 +1,7 @@
-import { BULLET } from '../creatures/bullet'
+import { currentBullet } from '../creatures/bullet'
 
 export function damageUnit(unit) {
-  const { speedDecrease } = BULLET;
+  const { speedDecrease } = currentBullet;
   const mass = unit.width * unit.height;
 
   const heroDamage = getHeroDamageToUnit(unit);
@@ -13,8 +13,8 @@ export function damageUnit(unit) {
 }
 
 function getHeroDamageToUnit(unit) {
-  const { damage } = BULLET;
-  const minDamage = 4;
+  const { damage } = currentBullet;
+  const minDamage = 6;
   const defense = unit.defense || 0;
   return damage - defense > 0 ? damage - defense : minDamage;
 }
@@ -39,10 +39,4 @@ function addBuffTimerToHero(hero, id) {
       hero.currentBuffs.shift();
     }
   }, 1000)
-}
-
-const buffTypes = ['red', 'black', 'red', 'green', 'orange']
-
-export function generateBuffType() {
-  return buffTypes[~~(Math.random() * 5)]
 }

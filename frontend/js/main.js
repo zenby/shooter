@@ -38,3 +38,7 @@ export function getScoreFromDatabase() {
     })
     .catch(error => console.log('misterious error'))
 }
+
+export function getTop10() {
+
+}

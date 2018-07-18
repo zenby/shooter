@@ -3,7 +3,7 @@ import { DummyEnemy, BASE_DUMMY_SIZE, SPEED as DUMMY_SPEAD } from "./creatures/d
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./utils/controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
-import { Bullet } from "./creatures/bullet";
+import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
 import { initializeGame, sendResultToDatabase } from './main';
 import { Landscape } from './items/landscape';
@@ -62,13 +62,13 @@ export class Game {
 
   updateCanvasState() {
     this.clearCanvas(this.ctx);
+    this.handleHeroDeath();
     this.handleHeroPosition();
     this.handleBuffItemPosition();
+    this.heroBullets = getElementsInsideCanvas(this.ctx, this.heroBullets);
     this.handleDummyEnemiesPosition();
     this.handleSmartEnemiesPosition();
-    this.heroBullets = getElementsInsideCanvas(this.ctx, this.heroBullets);
     this.handleEnemiesDeath();
-    this.handleHeroDeath();
     this.handleBuffs();
   }
 
@@ -146,6 +146,8 @@ export class Game {
   finishGame() {
     this.timers.map(timer => clearInterval(timer));
     this.hero.currentBuffs.map(buff => clearInterval(buff.timer));
+    this.hero = new Hero(this.ctx);
+    makeBulletDefault();
     const score = scoreLabel.innerText;
     const name = prompt("You lose, your score is " + score, 'User');
     sendResultToDatabase(score, name || 'User');

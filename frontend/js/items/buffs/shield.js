@@ -10,6 +10,10 @@ export class Shield extends Item {
   activateBuff(gameObject, time) {
     addBuffIndicator(gameObject.hero, buffTypes[1].color);
     gameObject.hero.isImmortal = true;
-    setTimeout(() => gameObject.hero.isImmortal = false, time)
+    const timer = setTimeout(() => {
+      const hasAnotherShield = gameObject.hero.currentBuffs.some(buff => buff.color === buffTypes[1].color);
+      gameObject.hero.isImmortal = !hasAnotherShield;
+    }, time)
+    gameObject.timers.push(timer);
   }
 }

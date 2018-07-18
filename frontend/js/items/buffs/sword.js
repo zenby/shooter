@@ -11,6 +11,7 @@ export class Sword extends Item {
   activateBuff(gameObject, time) {
     addBuffIndicator(gameObject.hero, buffTypes[0].color);
     growBullet();
-    setTimeout(() => shrinkBullet(), time);
+    const timer = setTimeout(() => shrinkBullet(), time);
+    gameObject.timers.push(timer);
   }
 }

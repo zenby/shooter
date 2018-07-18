@@ -15,9 +15,10 @@ export class Shoes extends Item {
     const enemies = [...gameObject.smartEnemies, ...gameObject.dummyEnemies];
     enemies.forEach(enemy => enemy.speed /= value);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       decreaseHeroVelocityByDebuff();
       enemies.forEach(enemy => enemy.speed *= value);
     }, time)
+    gameObject.timers.push(timer);
   }
 }
