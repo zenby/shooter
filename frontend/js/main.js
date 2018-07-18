@@ -30,15 +30,16 @@ export function sendResultToDatabase(score, name) {
 }
 
 export function getScoreFromDatabase() {
-  fetch(URL, { method: 'GET' })
+  fetch(`${URL}?orderBy=\"score\"&limitToLast=8`, { method: 'GET' })
     .then(response => response.json())
     .then(data => {
-      bestScores = data;
-      console.log(bestScores)
+      bestScores = getTop10(data);
+      console.log(bestScores);
     })
-    .catch(error => console.log('misterious error'))
+    .catch(() => console.log('misterious error'))
 }
 
-export function getTop10() {
-
+export function getTop10(data) {
+  const array = Object.values(data);
+  return array.sort((a, b) => a.score < b.score);
 }
