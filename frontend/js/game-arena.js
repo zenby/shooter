@@ -145,7 +145,7 @@ export class Game {
 
   finishGame() {
     this.timers.map(timer => clearInterval(timer));
-    this.hero.currentBuffsbuff(buff => clearInterval(buff.timer));
+    this.hero.currentBuffs.map(buff => clearInterval(buff.timer));
     const score = scoreLabel.innerText;
     const name = prompt("You lose, your score is " + score, 'User');
     sendResultToDatabase(score, name || 'User');

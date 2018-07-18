@@ -18,7 +18,7 @@ const img = document.querySelector('.hero-sprite');
 const speedLabel = document.querySelector('.speed');
 
 export class Hero extends Unit {
-  constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 0, alfaY = 0, speed = velocity.speed) {
+  constructor(ctx, width = WIDTH, height = HEIGHT, x = 50, y = 50, alfaX = 1, alfaY = 0, speed = velocity.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.isImmortal = false;
     this.accelerationStartTime = 0;
