@@ -1,8 +1,6 @@
 import { currentBullet } from '../creatures/bullet'
-import { initialParams } from '../constants';
+import { buffParams } from '../constants';
 import { ifUnitsTouchEachOther } from './geometry';
-
-const { buffParams } = initialParams;
 
 export function shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
   const MIN_SIZE = 25;

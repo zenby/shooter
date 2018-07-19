@@ -1,8 +1,6 @@
 import { Unit } from "./unit";
 import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils/geometry";
-import { initialParams } from '../constants';
-
-const { smartEnemyParams } = initialParams;
+import { smartEnemyParams } from '../constants';
 
 export const BASE_SMART_SIZE = smartEnemyParams.size;
 const img = document.querySelector('.smart-enemy-sprite')

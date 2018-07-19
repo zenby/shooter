@@ -1,7 +1,5 @@
 import { Unit } from "./unit";
-import { initialParams } from '../constants';
-
-const { bulletParams } = initialParams;
+import { bulletParams } from '../constants';
 
 export const currentBullet = {
   size: bulletParams.size,

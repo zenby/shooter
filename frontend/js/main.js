@@ -12,7 +12,7 @@ let bestScores = [];
 
 initializeGame();
 
-export function updateLevel(lvl) {
+export function updateLevelLabel(lvl) {
   levelLabel.innerHTML = lvl;
 }
 
@@ -43,7 +43,7 @@ function startGame() {
   game.start();
 }
 
-export function updateScore(currentTime, startTime) {
+export function updateScoreLabel(currentTime, startTime) {
   currentTime += 10;
   const value = (currentTime - startTime) / 10;
   scoreLabel.innerHTML = value;

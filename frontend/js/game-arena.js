@@ -6,10 +6,11 @@ import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoo
 import { clearCanvas } from './utils/canvas';
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
-import { initializeGame, updateLevel, showLoseMessage, showReplayButton, subscribeToShowReplay, updateScore } from './main';
+import { initializeGame, updateLevelLabel, showLoseMessage, showReplayButton, subscribeToShowReplay, updateScoreLabel } from './main';
 import { Landscape } from './items/landscape';
 import { shouldEnemyDieIfBulletHitsHim } from './utils/effects';
 import { addSnapshotToReplay, showReplay } from './replay';
+import { intervals } from './constants';
 
 export class Game {
   constructor(canvas) {
@@ -35,19 +36,19 @@ export class Game {
   }
 
   start() {
-    const timer1 = setInterval(() => this.updateGameState(), 20);
-    const timer2 = setInterval(() => this.updateSprites(), 200);
-    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
-    const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
-    const timer5 = setInterval(() => this.addBuffItem(), 8000);
-    const timer6 = setInterval(() => this.lvlUp(), 10000)
+    const timer1 = setInterval(() => this.updateGameState(), intervals.updateGameState);
+    const timer2 = setInterval(() => this.updateSprites(), intervals.updateSprites);
+    const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), intervals.addSmartEnemy);
+    const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), intervals.addDummyEnemy);
+    const timer5 = setInterval(() => this.addBuffItem(), intervals.addBuffItem);
+    const timer6 = setInterval(() => this.lvlUp(), intervals.lvlUp)
     this.timers.push(timer1, timer2, timer3, timer4, timer5, timer6);
     addHeroControls(this.hero, (x, y) => this.addBullet(x, y));
   }
 
   updateGameState() {
     this.updateCanvasState();
-    this.currentTime = updateScore(this.currentTime, this.startTime);
+    this.currentTime = updateScoreLabel(this.currentTime, this.startTime);
     addSnapshotToReplay(this.replay.units, this.currentTime - this.startTime, this.hero, this.dummyEnemies, this.smartEnemies, this.heroBullets, this.buffItem, this.lvl);
   }
 
@@ -163,7 +164,7 @@ export class Game {
     this.addEnemyStack(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE);
     this.addEnemyStack(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
     this.lvl++;
-    updateLevel(this.lvl);
+    updateLevelLabel(this.lvl);
   }
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {

@@ -2,9 +2,7 @@ import { Item } from './item';
 import { growBullet, shrinkBullet } from '../../creatures/bullet';
 import { addBuffIndicator } from '../../utils/effects'
 import { buffTypes } from './buff-generator';
-import { initialParams } from '../../constants';
-
-const { buffParams } = initialParams
+import { buffParams } from '../../constants';
 
 export class Sword extends Item {
   constructor(ctx, width, height, x, y, type) {

@@ -1,7 +1,5 @@
 import { Unit } from "./unit";
-import { initialParams } from '../constants';
-
-const { heroParams, buffParams } = initialParams;
+import { heroParams, buffParams } from '../constants';
 
 const velocity = {
   speed: 1,

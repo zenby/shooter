@@ -1,7 +1,5 @@
 import { Unit } from "./unit";
-import { initialParams } from '../constants';
-
-const { dummyEnemyParams } = initialParams;
+import { dummyEnemyParams } from '../constants';
 
 export const SPEED = dummyEnemyParams.speed;
 export const BASE_DUMMY_SIZE = dummyEnemyParams.size;

@@ -1,9 +1,7 @@
 import { Item } from './item';
 import { addBuffIndicator } from '../../utils/effects'
 import { buffTypes } from './buff-generator';
-import { initialParams } from '../../constants';
-
-const { buffParams } = initialParams
+import { buffParams } from '../../constants';
 
 export class Shield extends Item {
   constructor(ctx, width, height, x, y, type) {
