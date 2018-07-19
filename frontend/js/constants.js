@@ -1,5 +1,3 @@
-
-
 export const heroParams = {
   height: 50,
   width: 30,
@@ -24,7 +22,9 @@ export const bulletParams = {
   size: 5,
   damage: 20,
   speedDecrease: 0.10,
-  growAfterBuff: 2
+  growAfterBuff: 2,
+  minDamage: 6,
+  minCreatureSize: 25
 }
 
 export const smartEnemyParams = {
@@ -57,4 +57,9 @@ export const intervals = {
   addDummyEnemy: 4000,
   addBuffItem: 8000,
   lvlUp: 10000
+}
+
+export const lvlBuffs = {
+  speedIncrease: 0.15,
+  sizeIncrease: 5
 }

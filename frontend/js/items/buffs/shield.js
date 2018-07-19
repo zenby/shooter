@@ -1,6 +1,6 @@
 import { Item } from './item';
-import { addBuffIndicator } from '../../utils/effects'
-import { buffTypes } from './buff-generator';
+import { addBuffIndicator } from '../../utils/effectsUtils'
+import { buffTypes } from './buffGenerator';
 import { buffParams } from '../../constants';
 
 export class Shield extends Item {

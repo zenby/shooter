@@ -1,5 +1,6 @@
-import { hideReplayButton, initializeGame, updateLevelLabel } from './main';
-import { clearCanvas } from './utils/canvas';
+import { initializeGame } from './main';
+import { hideReplayButton, updateLevelLabel } from './utils/userUtils';
+import { clearCanvas } from './utils/canvasUtils';
 import { intervals } from './constants';
 
 export function addSnapshotToReplay(units, time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl) {

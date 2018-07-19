@@ -1,14 +1,13 @@
 import { currentBullet } from '../creatures/bullet'
-import { buffParams } from '../constants';
-import { ifUnitsTouchEachOther } from './geometry';
+import { buffParams, bulletParams } from '../constants';
+import { ifUnitsTouchEachOther } from './geometryUtils';
 
 export function shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
-  const MIN_SIZE = 25;
   const isContact = ifUnitsTouchEachOther(enemy, bullet)
   if (isContact) {
     enemy = damageUnit(enemy)
   }
-  if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
+  if (isContact && (enemy.width < bulletParams.minCreatureSize || enemy.height < bulletParams.minCreatureSize)) {
     return true;
   } else {
     return false
@@ -29,9 +28,8 @@ function damageUnit(unit) {
 
 function getHeroDamageToUnit(unit) {
   const { damage } = currentBullet;
-  const minDamage = 6;
   const defense = unit.defense || 0;
-  return damage - defense > 0 ? damage - defense : minDamage;
+  return damage - defense > 0 ? damage - defense : bulletParams.minDamage;
 }
 
 export function addBuffIndicator(hero, color) {

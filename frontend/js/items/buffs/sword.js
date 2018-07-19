@@ -1,7 +1,7 @@
 import { Item } from './item';
 import { growBullet, shrinkBullet } from '../../creatures/bullet';
-import { addBuffIndicator } from '../../utils/effects'
-import { buffTypes } from './buff-generator';
+import { addBuffIndicator } from '../../utils/effectsUtils'
+import { buffTypes } from './buffGenerator';
 import { buffParams } from '../../constants';
 
 export class Sword extends Item {

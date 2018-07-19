@@ -1,5 +1,5 @@
 import { Unit } from "./unit";
-import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils/geometry";
+import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils/geometryUtils";
 import { smartEnemyParams } from '../constants';
 
 export const BASE_SMART_SIZE = smartEnemyParams.size;

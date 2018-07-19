@@ -1,7 +1,7 @@
 import { Item } from './item';
 import { increaseHeroVelocityByBuff, decreaseHeroVelocityByDebuff } from '../../creatures/hero';
-import { addBuffIndicator } from '../../utils/effects'
-import { buffTypes } from './buff-generator';
+import { addBuffIndicator } from '../../utils/effectsUtils'
+import { buffTypes } from './buffGenerator';
 import { buffParams } from '../../constants';
 
 export class Shoes extends Item {

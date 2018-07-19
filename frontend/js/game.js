@@ -1,16 +1,17 @@
 import { Hero } from "./creatures/hero";
 import { DummyEnemy, BASE_DUMMY_SIZE, SPEED as DUMMY_SPEAD } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
-import { addHeroControls } from "./utils/controls";
-import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
-import { clearCanvas } from './utils/canvas';
+import { addHeroControls } from "./utils/controlsUtils";
+import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometryUtils";
+import { clearCanvas } from './utils/canvasUtils';
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
-import { RandomBuff } from './items/buffs/buff-generator';
-import { initializeGame, updateLevelLabel, showLoseMessage, showReplayButton, subscribeToShowReplay, updateScoreLabel } from './main';
+import { RandomBuff } from './items/buffs/buffGenerator';
+import { initializeGame } from './main';
+import { updateLevelLabel, showReplayButton, updateScoreLabel, showLoseMessage, subscribeToShowReplay } from './utils/userUtils';
 import { Landscape } from './items/landscape';
-import { shouldEnemyDieIfBulletHitsHim } from './utils/effects';
+import { shouldEnemyDieIfBulletHitsHim } from './utils/effectsUtils';
 import { addSnapshotToReplay, showReplay } from './replay';
-import { intervals } from './constants';
+import { intervals, lvlBuffs } from './constants';
 
 export class Game {
   constructor(canvas) {
@@ -129,9 +130,8 @@ export class Game {
 
   handleHeroDeath() {
     if (!this.hero.isImmortal) {
-      const DELTA = 10;
       const enemies = [...this.dummyEnemies, ...this.smartEnemies];
-      if (enemies.some(enemy => ifUnitsTouchEachOther(this.hero, enemy, DELTA))) {
+      if (enemies.some(enemy => ifUnitsTouchEachOther(this.hero, enemy, 10))) {
         this.finishGame();
       }
     }
@@ -141,9 +141,7 @@ export class Game {
     showReplayButton();
     this.clearPreviousGameState();
     showLoseMessage();
-    subscribeToShowReplay(() =>
-      showReplay(this.replay, this.ctx)
-    );
+    subscribeToShowReplay(() => showReplay(this.replay, this.ctx));
     document.addEventListener('keydown', initializeGame, { once: true });
   }
 
@@ -169,7 +167,7 @@ export class Game {
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
-    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + 0.15 * this.lvl);
+    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
     enemyArray.push(enemy);
   }
 
@@ -199,19 +197,17 @@ export class Game {
   }
 
   generateRandomPositionAndDirection(hero, baseSize, isInsideCircle = false, distance = 200) {
-    let x;
-    let y;
-    const size = Math.random() * 20 + baseSize + this.lvl * 5;
-    let condition;
+    let x, y, condition;
+    const size = Math.random() * 20 + baseSize + this.lvl * lvlBuffs.sizeIncrease;
+    const alfaX = Math.random() * 2 - 1;
+    const alfaY = Math.random() * 2 - 1;
+
     do {
       x = Math.random() * this.ctx.canvas.clientWidth;
       y = Math.random() * this.ctx.canvas.clientHeight;
       const newUnit = { x, y, width: size, height: size };
       condition = isDistanceBetweenUnitsMoreThanSafe(hero, newUnit, distance);
     } while (isInsideCircle ? condition : !condition);
-
-    const alfaX = Math.random() * 2 - 1;
-    const alfaY = Math.random() * 2 - 1;
 
     return { x, y, alfaX, alfaY, size };
   }
