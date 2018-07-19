@@ -1,4 +1,5 @@
 import { hideReplayButton, initializeGame, updateLevel } from './main';
+import { clearCanvas } from './utils/canvas';
 
 export function addSnapshotToReplay(units, time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl) {
   units.push(getReplaySnapshotObject(time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl))
@@ -45,7 +46,7 @@ export function showReplay(replay, ctx) {
   }, 200)
   const timer = setInterval(() => {
     const { hero, dummyEnemies, smartEnemies, heroBullets, buffItem } = replay.units[frame];
-    ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+    clearCanvas(ctx);
     // replay.landscape.draw(ctx);
     updateUnitPosition(hero);
     hero.unit.sprite.x = hero.spriteX;

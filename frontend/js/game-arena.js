@@ -3,14 +3,13 @@ import { DummyEnemy, BASE_DUMMY_SIZE, SPEED as DUMMY_SPEAD } from "./creatures/d
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
 import { addHeroControls } from "./utils/controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
+import { clearCanvas } from './utils/canvas';
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
 import { initializeGame, updateLevel, showLoseMessage, showReplayButton, subscribeToShowReplay, updateScore } from './main';
 import { Landscape } from './items/landscape';
-import { damageUnit } from './utils/effects';
+import { shouldEnemyDieIfBulletHitsHim } from './utils/effects';
 import { addSnapshotToReplay, showReplay } from './replay';
-
-const scoreLabel = document.querySelector(".score");
 
 export class Game {
   constructor(canvas) {
@@ -58,7 +57,7 @@ export class Game {
   }
 
   updateCanvasState() {
-    this.clearCanvas(this.ctx);
+    clearCanvas(this.ctx);
     // this.drawLandscape();
     this.handleHeroDeath();
     this.handleHeroPosition();
@@ -68,10 +67,6 @@ export class Game {
     this.handleSmartEnemiesPosition();
     this.handleEnemiesDeath();
     this.handleBuffs();
-  }
-
-  clearCanvas(ctx) {
-    ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
   }
 
   drawLandscape() {
@@ -112,17 +107,17 @@ export class Game {
     const allEnemies = [...this.smartEnemies, ...this.dummyEnemies]
 
     this.smartEnemies.forEach(enemy => {
-      if (!this.heroBullets.some(bullet => this.shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
+      if (!this.heroBullets.some(bullet => shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
         newSmartEnemies.push(enemy)
       }
     })
     this.dummyEnemies.forEach(enemy => {
-      if (!this.heroBullets.some(bullet => this.shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
+      if (!this.heroBullets.some(bullet => shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
         newDummyEnemies.push(enemy)
       }
     })
     this.heroBullets.forEach(bullet => {
-      if (!allEnemies.some(enemy => this.shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
+      if (!allEnemies.some(enemy => shouldEnemyDieIfBulletHitsHim(enemy, bullet))) {
         newBullets.push(bullet)
       }
     })
@@ -169,19 +164,6 @@ export class Game {
     this.addEnemyStack(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
     this.lvl++;
     updateLevel(this.lvl);
-  }
-
-  shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
-    const MIN_SIZE = 25;
-    const isContact = ifUnitsTouchEachOther(enemy, bullet)
-    if (isContact) {
-      enemy = damageUnit(enemy)
-    }
-    if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
-      return true;
-    } else {
-      return false
-    }
   }
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {

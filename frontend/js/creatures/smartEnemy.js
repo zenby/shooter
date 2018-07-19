@@ -86,7 +86,7 @@ function getFearParams(isFear) {
     return {
       distance: 200,
       isFear: -1,
-      message: 'I see you'
+      message: 'I see you!'
     }
   }
 }

@@ -1,9 +1,23 @@
 import { currentBullet } from '../creatures/bullet'
 import { initialParams } from '../constants';
+import { ifUnitsTouchEachOther } from './geometry';
 
 const { buffParams } = initialParams;
 
-export function damageUnit(unit) {
+export function shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
+  const MIN_SIZE = 25;
+  const isContact = ifUnitsTouchEachOther(enemy, bullet)
+  if (isContact) {
+    enemy = damageUnit(enemy)
+  }
+  if (isContact && (enemy.width < MIN_SIZE || enemy.height < MIN_SIZE)) {
+    return true;
+  } else {
+    return false
+  }
+}
+
+function damageUnit(unit) {
   const { speedDecrease } = currentBullet;
   const mass = unit.width * unit.height;
 

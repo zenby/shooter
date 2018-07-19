@@ -45,7 +45,6 @@ function startGame() {
 
 export function updateScore(currentTime, startTime) {
   currentTime += 10;
-  console.log(currentTime)
   const value = (currentTime - startTime) / 10;
   scoreLabel.innerHTML = value;
   return currentTime + 10;
