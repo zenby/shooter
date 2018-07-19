@@ -28,5 +28,11 @@ canvas {
     left: 20px    
 }
 .level-container span {
-    font-size: 30px;
+    font-size: 20px;
+}
+
+.replay-container{
+    position: absolute;
+    top: 120px;
+    left: 20px    
 }

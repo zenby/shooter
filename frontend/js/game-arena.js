@@ -5,11 +5,13 @@ import { addHeroControls } from "./utils/controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
-import { initializeGame, updateLevel, showLoseMessage } from './main';
+import { initializeGame, updateLevel, showLoseMessage, showReplayButton, subscribeToShowReplay } from './main';
 import { Landscape } from './items/landscape';
 import { damageUnit } from './utils/effects';
+import { addSnapshotToReplay, showReplay } from './replay';
 
 const scoreLabel = document.querySelector(".score");
+const replayButton = document.querySelector('.replay-container');
 
 export class Game {
   constructor(canvas) {
@@ -29,12 +31,13 @@ export class Game {
     this.timers = [];
     this.lvl = 1;
     this.buffItem = '';
+    this.replay = { landscape: this.landscape, units: [] };
 
     this.handleHeroPosition();
   }
 
   start() {
-    const timer1 = setInterval(() => this.updateGameState(), 10);
+    const timer1 = setInterval(() => this.updateGameState(), 20);
     const timer2 = setInterval(() => this.updateSprites(), 200);
     const timer3 = setInterval(() => this.addEnemy(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE), 2000);
     const timer4 = setInterval(() => this.addEnemy(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE), 4000);
@@ -47,6 +50,7 @@ export class Game {
   updateGameState() {
     this.updateScore();
     this.updateCanvasState();
+    addSnapshotToReplay(this.replay.units, this.currentTime - this.startTime, this.hero, this.dummyEnemies, this.smartEnemies, this.heroBullets, this.buffItem, this.lvl);
   }
 
   updateScore() {
@@ -56,8 +60,8 @@ export class Game {
   }
 
   updateSprites() {
-    const sprites = [this.hero, ...this.dummyEnemies, ...this.smartEnemies];
-    sprites.forEach(sprite => sprite.setNextSprite());
+    const units = [this.hero, ...this.dummyEnemies, ...this.smartEnemies];
+    units.forEach(sprite => sprite.setNextSprite());
   }
 
   updateCanvasState() {
@@ -144,15 +148,19 @@ export class Game {
   }
 
   finishGame() {
+    showReplayButton();
     this.clearPreviousGameState();
     showLoseMessage();
-    setTimeout(() => initializeGame(), 200);
+    subscribeToShowReplay(() =>
+      showReplay(this.replay, this.ctx)
+    );
+    document.addEventListener('keydown', initializeGame, { once: true });
   }
 
   clearPreviousGameState() {
     this.timers.map(timer => clearInterval(timer));
     this.hero.currentBuffs.map(buff => clearInterval(buff.timer));
-    this.hero = new Hero(this.ctx);
+    // this.hero = new Hero(this.ctx);
     makeBulletDefault();
   }
 
