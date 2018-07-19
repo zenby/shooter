@@ -43,14 +43,22 @@ function startGame() {
   game.start();
 }
 
-export function sendResultToDatabase(score, name) {
+export function updateScore(currentTime, startTime) {
+  currentTime += 10;
+  console.log(currentTime)
+  const value = (currentTime - startTime) / 10;
+  scoreLabel.innerHTML = value;
+  return currentTime + 10;
+}
+
+function sendResultToDatabase(score, name) {
   fetch(URL, {
     method: 'POST',
     body: JSON.stringify({ score, name })
   })
 }
 
-export function getScoreFromDatabase() {
+function getScoreFromDatabase() {
   fetch(`${URL}?orderBy=\"score\"&limitToLast=8`, { method: 'GET' })
     .then(response => response.json())
     .then(data => {

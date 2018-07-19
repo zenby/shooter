@@ -5,13 +5,12 @@ import { addHeroControls } from "./utils/controls";
 import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometry";
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
 import { RandomBuff } from './items/buffs/buff-generator';
-import { initializeGame, updateLevel, showLoseMessage, showReplayButton, subscribeToShowReplay } from './main';
+import { initializeGame, updateLevel, showLoseMessage, showReplayButton, subscribeToShowReplay, updateScore } from './main';
 import { Landscape } from './items/landscape';
 import { damageUnit } from './utils/effects';
 import { addSnapshotToReplay, showReplay } from './replay';
 
 const scoreLabel = document.querySelector(".score");
-const replayButton = document.querySelector('.replay-container');
 
 export class Game {
   constructor(canvas) {
@@ -32,7 +31,7 @@ export class Game {
     this.lvl = 1;
     this.buffItem = '';
     this.replay = { landscape: this.landscape, units: [] };
-
+    // this.drawLandscape();
     this.handleHeroPosition();
   }
 
@@ -48,15 +47,9 @@ export class Game {
   }
 
   updateGameState() {
-    this.updateScore();
     this.updateCanvasState();
+    this.currentTime = updateScore(this.currentTime, this.startTime);
     addSnapshotToReplay(this.replay.units, this.currentTime - this.startTime, this.hero, this.dummyEnemies, this.smartEnemies, this.heroBullets, this.buffItem, this.lvl);
-  }
-
-  updateScore() {
-    this.currentTime = this.currentTime + 10;
-    const value = (this.currentTime - this.startTime);
-    scoreLabel.innerHTML = value;
   }
 
   updateSprites() {
@@ -66,6 +59,7 @@ export class Game {
 
   updateCanvasState() {
     this.clearCanvas(this.ctx);
+    // this.drawLandscape();
     this.handleHeroDeath();
     this.handleHeroPosition();
     this.handleBuffItemPosition();
@@ -160,10 +154,8 @@ export class Game {
   clearPreviousGameState() {
     this.timers.map(timer => clearInterval(timer));
     this.hero.currentBuffs.map(buff => clearInterval(buff.timer));
-    // this.hero = new Hero(this.ctx);
     makeBulletDefault();
   }
-
 
   handleBuffs() {
     if (ifUnitsTouchEachOther(this.hero, this.buffItem)) {
