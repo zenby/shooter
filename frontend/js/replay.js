@@ -1,5 +1,6 @@
-import { hideReplayButton, initializeGame, updateLevel } from './main';
+import { hideReplayButton, initializeGame, updateLevelLabel } from './main';
 import { clearCanvas } from './utils/canvas';
+import { intervals } from './constants';
 
 export function addSnapshotToReplay(units, time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl) {
   units.push(getReplaySnapshotObject(time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl))
@@ -22,9 +23,44 @@ function getReplayItemsArray(array) {
     ({ unit: item, posX: ~~item.x, posY: ~~item.y, width: ~~item.width, height: ~~item.height }))
 }
 
-function updateUnitPosition(replayItem) {
-  replayItem.unit.x = replayItem.posX;
-  replayItem.unit.y = replayItem.posY;
+export function showReplay(replay, ctx) {
+  let frame = 0;
+
+  const spriteTimer = setInterval(() => {
+    updateSpritesFromReplaySnapshot(replay.units[frame]);
+  }, intervals.updateSprites)
+
+  const posititionTimer = setInterval(() => {
+    updateUnitsPositionFromReplaySnapshot(ctx, replay.units[frame]);
+    frame++;
+    if (frame === replay.units.length - 1) {
+      clearInterval(spriteTimer);
+      clearInterval(posititionTimer);
+      hideReplayButton();
+      initializeGame();
+    }
+  }, intervals.updateGameState);
+}
+
+function updateSpritesFromReplaySnapshot(snapshot) {
+  const { hero, dummyEnemies, smartEnemies, lvl } = snapshot;
+  const units = [hero, ...dummyEnemies, ...smartEnemies];
+  units.forEach(replayItem => replayItem.unit.setNextSprite());
+  updateLevelLabel(lvl);
+}
+
+function updateUnitsPositionFromReplaySnapshot(ctx, snapshot) {
+  const { hero, dummyEnemies, smartEnemies, heroBullets, buffItem } = snapshot;
+  clearCanvas(ctx);
+  // replay.landscape.draw(ctx);
+  updateUnitPosition(hero);
+  hero.unit.sprite.x = hero.spriteX;
+  hero.unit.sprite.y = hero.spriteY;
+  hero.unit.newPos().update(ctx);
+  updateReplayItemsArray(ctx, dummyEnemies);
+  updateReplayItemsArray(ctx, smartEnemies, hero.unit);
+  updateReplayItemsArray(ctx, heroBullets);
+  buffItem && buffItem.draw(ctx)
 }
 
 function updateReplayItemsArray(ctx, array, hero) {
@@ -36,32 +72,7 @@ function updateReplayItemsArray(ctx, array, hero) {
   });
 }
 
-export function showReplay(replay, ctx) {
-  let frame = 0;
-  const renderTimer = setInterval(() => {
-    const { hero, dummyEnemies, smartEnemies, lvl } = replay.units[frame];
-    const units = [hero, ...dummyEnemies, ...smartEnemies];
-    units.forEach(replayItem => replayItem.unit.setNextSprite());
-    updateLevel(lvl);
-  }, 200)
-  const timer = setInterval(() => {
-    const { hero, dummyEnemies, smartEnemies, heroBullets, buffItem } = replay.units[frame];
-    clearCanvas(ctx);
-    // replay.landscape.draw(ctx);
-    updateUnitPosition(hero);
-    hero.unit.sprite.x = hero.spriteX;
-    hero.unit.sprite.y = hero.spriteY;
-    hero.unit.newPos().update(ctx);
-    updateReplayItemsArray(ctx, dummyEnemies);
-    updateReplayItemsArray(ctx, smartEnemies, hero.unit);
-    updateReplayItemsArray(ctx, heroBullets);
-    buffItem && buffItem.draw(ctx)
-    frame++;
-    if (frame === replay.units.length - 1) {
-      clearInterval(renderTimer);
-      clearInterval(timer);
-      hideReplayButton();
-      initializeGame();
-    }
-  }, 20);
+function updateUnitPosition(replayItem) {
+  replayItem.unit.x = replayItem.posX;
+  replayItem.unit.y = replayItem.posY;
 }
