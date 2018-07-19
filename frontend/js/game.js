@@ -173,11 +173,11 @@ export class Game {
 
   addEnemyStack(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
-    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
+    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
     enemyArray.push(enemy);
     for (let i = 0; i < this.lvl; i++) {
       const { size, x, y } = this.generateRandomPositionAndDirection(enemy, baseSize, true, 100);
-      const newEnemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY);
+      const newEnemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
       enemyArray.push(newEnemy);
     }
   }

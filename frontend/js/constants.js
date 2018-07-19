@@ -20,7 +20,7 @@ export const bulletParams = {
   speed: 10,
   color: 'black',
   size: 5,
-  damage: 20,
+  damage: 35,
   speedDecrease: 0.10,
   growAfterBuff: 2,
   minDamage: 6,
@@ -53,13 +53,13 @@ export const dummyEnemyParams = {
 export const intervals = {
   updateGameState: 20,
   updateSprites: 200,
-  addSmartEnemy: 2000,
+  addSmartEnemy: 3000,
   addDummyEnemy: 4000,
   addBuffItem: 8000,
   lvlUp: 10000
 }
 
 export const lvlBuffs = {
-  speedIncrease: 0.15,
-  sizeIncrease: 5
+  speedIncrease: 0.25,
+  sizeIncrease: 2
 }
