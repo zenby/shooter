@@ -48,7 +48,7 @@ export class SmartEnemy extends Unit {
   }
 
   updateDirection(hero) {
-    const fearParams = getFearParams(hero.isImmortal);
+    const fearParams = getFearParams(this, hero.isImmortal);
     if (!isDistanceBetweenUnitsMoreThanSafe(hero, this, fearParams.distance)) {
       const [heroX, heroY] = getCenterCoordinates(hero);
       const angle = Math.atan2(heroX - this.x - this.width / 2, heroY - this.y - this.height / 2) + Math.PI;
@@ -79,7 +79,7 @@ export class SmartEnemy extends Unit {
   }
 }
 
-function getFearParams(isFear) {
+function getFearParams(unit, isFear) {
   if (isFear) {
     return {
       distance: 300,
@@ -90,7 +90,7 @@ function getFearParams(isFear) {
     return {
       distance: 200,
       isFear: -1,
-      message: 'I see you!'
+      message: !unit.isMaxSize() ? 'Don\'t fear, I\'m on the diet!' : 'I see you!'
     }
   }
 }
