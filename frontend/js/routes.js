@@ -4,6 +4,8 @@ import { game } from './main';
 
 let gameContainer = document.querySelector('.game-container');
 
+let requestTimer;
+
 const routes = [
   {
     match: '',
@@ -29,11 +31,12 @@ const routes = [
     match: 'scores',
     onEnter: () => {
       changeActivePage('scores');
-      gameContainer.innerHTML = '<div></div>';
-      getScoreFromDatabase()
-        .then(res => gameContainer.innerHTML = generateScoreContent(res));
+      gameContainer.innerHTML = '<div class="arena"><div class="lds-ripple"><div></div><div></div></div></div>';
+      requestTimer = setTimeout(() => getScoreFromDatabase()
+        .then(res => gameContainer.innerHTML = generateScoreContent(res)), 1000)
     },
     onLeave: () => {
+      clearInterval(requestTimer);
       removeActivePage('scores');
     }
   }, {
@@ -166,7 +169,7 @@ function generateAuthorContent() {
             <p>Hello, my name is Evgeniy and i'm the author of the game. If you have any
             questions you can find me here <a href="https://www.linkedin.com/in/evgeniy-dainovich/">LinkenIn</a>
             </p>
-            <p>Game is developed with javascript and bootstrap for styling.</p>
+            <p>Game is developed with Javascript and Bootstrap for styling.</p>
           </div>`
 }
 
