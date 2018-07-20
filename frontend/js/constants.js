@@ -4,10 +4,10 @@ export const heroParams = {
   posX: 50,
   posY: 50,
   spriteLayer: {
-    top: 2,
-    left: 3,
-    right: 0,
-    bottom: 1
+    top: 3,
+    left: 1,
+    right: 2,
+    bottom: 0
   }
 }
 
@@ -18,13 +18,14 @@ export const buffParams = {
 
 export const bulletParams = {
   speed: 10,
-  color: 'black',
+  color: 'red',
+  colorSecond: 'yellow',
   size: 5,
   damage: 35,
   speedDecrease: 0.10,
   growAfterBuff: 2,
   minDamage: 10,
-  minCreatureSize: 25
+  minCreatureSize: 30
 }
 
 export const smartEnemyParams = {
@@ -34,6 +35,12 @@ export const smartEnemyParams = {
     x: 10,
     y: 5,
     font: "13px Arial"
+  },
+  spriteLayer: {
+    top: 3,
+    left: 1,
+    right: 2,
+    bottom: 0
   },
   defenseIncrease: 3,
   speedIncrease: 0.1,
@@ -48,8 +55,8 @@ export const dummyEnemyParams = {
   spriteLayer: {
     top: 3,
     left: 1,
-    right: 0,
-    bottom: 2
+    right: 2,
+    bottom: 0
   }
 }
 
@@ -57,7 +64,7 @@ export const intervals = {
   updateGameState: 20,
   updateSprites: 200,
   addSmartEnemy: 3000,
-  addDummyEnemy: 4000,
+  addDummyEnemy: 40000,
   addBuffItem: 8000,
   lvlUp: 13000
 }

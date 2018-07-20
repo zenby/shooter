@@ -10,7 +10,7 @@ const velocity = {
 const img = document.querySelector('.hero-sprite');
 
 export class Hero extends Unit {
-  constructor(ctx, width = heroParams.width, height = heroParams.height, x = heroParams.posX, y = heroParams.posY, alfaX = 1, alfaY = 0, speed = velocity.speed) {
+  constructor(ctx, width = heroParams.width, height = heroParams.height, x = heroParams.posX, y = heroParams.posY, alfaX = 0, alfaY = 1, speed = velocity.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.isImmortal = false;
     this.accelerationStartTime = 0;
@@ -18,22 +18,22 @@ export class Hero extends Unit {
     this.currentBuffs = []
 
     this.sprite = {
-      baseX: 9,
-      baseY: 2,
-      x: 9,
-      y: 2,
-      width: 16,
-      height: 26,
+      baseX: 2,
+      baseY: 1,
+      x: 2,
+      y: 1,
+      width: 27,
+      height: 32,
       deltaX: 32,
       deltaY: 32
     }
   }
 
   setNextSprite() {
-    if (this.sprite.y < 96) {
-      this.sprite.y += this.sprite.deltaY;
+    if (this.sprite.x < 64) {
+      this.sprite.x += this.sprite.deltaX;
     } else {
-      this.sprite.y = this.sprite.baseY;
+      this.sprite.x = this.sprite.baseX;
     }
   }
 
@@ -46,7 +46,7 @@ export class Hero extends Unit {
   }
 
   updateSpriteDirection(direction) {
-    this.sprite.x = this.sprite.baseX + heroParams.spriteLayer[direction] * this.sprite.deltaX
+    this.sprite.y = this.sprite.baseY + heroParams.spriteLayer[direction] * this.sprite.deltaY
   }
 
   makeHeroSpeedParamsDefault() {

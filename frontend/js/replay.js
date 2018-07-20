@@ -33,7 +33,7 @@ export function showReplay(replay, ctx) {
   }, intervals.updateSprites)
 
   replay.positionTimer = setInterval(() => {
-    updateUnitsPositionFromReplaySnapshot(ctx, replay.units[frame]);
+    updateUnitsPositionFromReplaySnapshot(ctx, replay.units[frame], replay.landscape);
     frame++;
     if (frame === replay.units.length - 1) {
       clearInterval(replay.spriteTimer);
@@ -53,10 +53,10 @@ function updateSpritesFromReplaySnapshot(snapshot) {
   updateLevelLabel(lvl);
 }
 
-function updateUnitsPositionFromReplaySnapshot(ctx, snapshot) {
+function updateUnitsPositionFromReplaySnapshot(ctx, snapshot, landscape) {
   const { hero, dummyEnemies, smartEnemies, heroBullets, buffItem } = snapshot;
   clearCanvas(ctx);
-  // replay.landscape.draw(ctx);
+  landscape.draw(ctx);
   updateUnitPosition(hero);
   hero.unit.sprite.x = hero.spriteX;
   hero.unit.sprite.y = hero.spriteY;

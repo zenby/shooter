@@ -3,26 +3,26 @@ import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../uti
 import { smartEnemyParams } from '../constants';
 
 export const BASE_SMART_SIZE = smartEnemyParams.size;
-const img = document.querySelector('.smart-enemy-sprite');
+const img = document.querySelector('.mashroom');
 
 export class SmartEnemy extends Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed = smartEnemyParams.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.sprite = {
-      baseX: 0,
-      baseY: 0,
-      x: 0,
-      y: 0,
-      width: 16,
-      height: 16,
-      deltaX: 16,
-      deltaY: 16
+      baseX: 6,
+      baseY: 3,
+      x: 6,
+      y: this.getSpriteLayerValue(this.dir.x, this.dir.y) * 48 + 3,
+      width: 34,
+      height: 47,
+      deltaX: 48,
+      deltaY: 48
     }
     this.defense = 0;
   }
 
   setNextSprite() {
-    if (this.sprite.x < 48) {
+    if (this.sprite.x < 96) {
       this.sprite.x += this.sprite.deltaX;
     } else {
       this.sprite.x = this.sprite.baseX;
@@ -30,6 +30,7 @@ export class SmartEnemy extends Unit {
   }
 
   newPos(hero) {
+    this.sprite.y = this.getSpriteLayerValue(this.dir.x, this.dir.y) * 48 + this.sprite.baseY;
     this.updateDirection(hero);
     super.newPos();
     return this;
@@ -41,6 +42,15 @@ export class SmartEnemy extends Unit {
     return this;
   }
 
+  getSpriteLayerValue(x, y) {
+    const { spriteLayer } = smartEnemyParams;
+    if (Math.abs(x) > Math.abs(y)) {
+      return x > 0 ? spriteLayer.right : spriteLayer.left;
+    } else {
+      return y > 0 ? spriteLayer.bottom : spriteLayer.top;
+    }
+  }
+
   showWarningMessage(text) {
     const { message } = smartEnemyParams;
     this.ctx.font = message.font;
@@ -48,7 +58,7 @@ export class SmartEnemy extends Unit {
   }
 
   updateDirection(hero) {
-    const fearParams = getFearParams(this, hero.isImmortal);
+    const fearParams = getFearParams(hero.isImmortal);
     if (!isDistanceBetweenUnitsMoreThanSafe(hero, this, fearParams.distance)) {
       const [heroX, heroY] = getCenterCoordinates(hero);
       const angle = Math.atan2(heroX - this.x - this.width / 2, heroY - this.y - this.height / 2) + Math.PI;
@@ -64,22 +74,17 @@ export class SmartEnemy extends Unit {
     const mass1 = this.width * this.height;
     const mass2 = unit.width * unit.height;
     const k = Math.pow((mass1 + mass2) / mass1, 0.5);
-    this.width = Math.max(this.width * k, smartEnemyParams.maxSize);
-    this.height = Math.max(this.height * k, smartEnemyParams.maxSize);
+    this.width *= k;
+    this.height *= k;
     this.defense = Math.max(this.defense, unit.defense) + defenseIncrease;
     let maxSpeed = Math.max(this.speed, unit.speed);
     this.speed = maxSpeed > defaultSpeed ? maxSpeed += speedIncrease : defaultSpeed;
     this.x = (this.x * mass1 + unit.x * mass2) / (mass1 + mass2);
     this.y = (this.y * mass1 + unit.y * mass2) / (mass1 + mass2);
   }
-
-  isMaxSize() {
-    const { maxSize } = smartEnemyParams;
-    return this.width === maxSize && this.height === maxSize;
-  }
 }
 
-function getFearParams(unit, isFear) {
+function getFearParams(isFear) {
   if (isFear) {
     return {
       distance: smartEnemyParams.fearDistance,
@@ -90,7 +95,7 @@ function getFearParams(unit, isFear) {
     return {
       distance: smartEnemyParams.visibilityDistance,
       isFear: -1,
-      message: unit.isMaxSize() ? 'Don\'t fear, I\'m on the diet!' : 'I see you!'
+      message: 'I see you!'
     }
   }
 }

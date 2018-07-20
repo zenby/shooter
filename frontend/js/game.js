@@ -24,7 +24,7 @@ export class Game {
     this.currentTime = Date.now();
 
     this.hero = new Hero(this.ctx);
-    this.landscape = new Landscape(this.ctx, 40, 40)
+    this.landscape = new Landscape(this.ctx, 96, 72)
     this.dummyEnemies = [];
     this.smartEnemies = [];
     this.heroBullets = [];
@@ -32,7 +32,7 @@ export class Game {
     this.lvl = 1;
     this.buffItem = '';
     this.replay = { landscape: this.landscape, units: [] };
-    // this.drawLandscape();
+    this.drawLandscape();
     this.handleHeroPosition();
   }
 
@@ -60,7 +60,7 @@ export class Game {
 
   updateCanvasState() {
     clearCanvas(this.ctx);
-    // this.drawLandscape();
+    this.drawLandscape();
     this.handleHeroDeath();
     this.handleHeroPosition();
     this.handleBuffItemPosition();
@@ -93,7 +93,7 @@ export class Game {
         return newArray;
       }
       const secondEnemy = this.smartEnemies.find(enemy => ifUnitsTouchEachOther(enemy, currentEnemy) && (enemy !== currentEnemy))
-      if (secondEnemy && !secondEnemy.isMaxSize && !currentEnemy.isMaxSize) {
+      if (secondEnemy) {
         currentEnemy.eat(secondEnemy);
       }
       newArray.push(currentEnemy);
@@ -166,17 +166,17 @@ export class Game {
 
   addEnemy(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
-    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
+    const enemy = new creatureConstructor(this.ctx, size * 0.8, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
     enemyArray.push(enemy);
   }
 
   addEnemyStack(enemyArray, creatureConstructor, baseSize) {
     const { size, x, y, alfaX, alfaY } = this.generateRandomPositionAndDirection(this.hero, baseSize);
-    const enemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
+    const enemy = new creatureConstructor(this.ctx, size * 0.8, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
     enemyArray.push(enemy);
     for (let i = 0; i < this.lvl; i++) {
       const { size, x, y } = this.generateRandomPositionAndDirection(enemy, baseSize, true, 100);
-      const newEnemy = new creatureConstructor(this.ctx, size, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
+      const newEnemy = new creatureConstructor(this.ctx, size * 0.8, size, x, y, alfaX, alfaY, DUMMY_SPEAD + lvlBuffs.speedIncrease * this.lvl);
       enemyArray.push(newEnemy);
     }
   }

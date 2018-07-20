@@ -9,8 +9,8 @@ export class Landscape {
     this.sprite = {
       x: 0,
       y: 0,
-      width: 32,
-      height: 32,
+      width: 96,
+      height: 72,
     }
     this.image = document.querySelector('.landscape');
   }

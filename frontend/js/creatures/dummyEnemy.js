@@ -4,25 +4,25 @@ import { dummyEnemyParams } from '../constants';
 export const SPEED = dummyEnemyParams.speed;
 export const BASE_DUMMY_SIZE = dummyEnemyParams.size;
 
-const img = document.querySelector('.dummy-enemy-sprite');
+const img = document.querySelector('.ice-demon');
 
 export class DummyEnemy extends Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.sprite = {
-      baseX: 0,
+      baseX: 1,
       baseY: 0,
       x: 0,
-      y: this.getSpriteLayerValue(this.dir.x, this.dir.y) * 16,
-      width: 16,
-      height: 16,
-      deltaX: 16,
-      deltaY: 16
+      y: this.getSpriteLayerValue(this.dir.x, this.dir.y) * 50,
+      width: 34,
+      height: 48,
+      deltaX: 50,
+      deltaY: 50
     }
   }
 
   setNextSprite() {
-    if (this.sprite.x < 16) {
+    if (this.sprite.x < 100) {
       this.sprite.x += this.sprite.deltaX;
     } else {
       this.sprite.x = this.sprite.baseX;
