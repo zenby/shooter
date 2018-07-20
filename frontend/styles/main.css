@@ -45,6 +45,20 @@ canvas {
     margin-bottom: 16px;
 }
 
+.blue {
+    color: blue;
+    font-weight: 600;
+}
+.black {
+    color: black;
+    font-weight: 600;
+}
+.red {
+    color: red;
+    font-weight: 600;
+}
+
+
 .lds-ripple {
     display: inline-block;
     position: relative;

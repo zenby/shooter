@@ -9,6 +9,7 @@ export function getDistanceBetweenUnits(unit1, unit2) {
 }
 
 const PIXEL_BORDER = 2
+
 export function ifUnitsTouchEachOther(unit1, unit2, delta = 0) {
   const [x1, y1] = getCenterCoordinates(unit1);
   const [x2, y2] = getCenterCoordinates(unit2);

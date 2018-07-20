@@ -136,8 +136,7 @@ function generateRulesContent() {
                 with arrow buttons <code>🠀 🠁🠃 🠂</code> where push of each change hero direction 
                 to the arrow direction. Also you can stop hero, with
                 <code>Ctrl</code> button. </p> Game finish when any of the enemies catches hero.
-            <p>
-                Hero has ability to shoot with his gun to the nearest enemies. User do it with the
+            <p>Hero has ability to shoot with his gun to the nearest enemies. User do it with the
                 mouse, shoot action occurs if user press
                 <code>left button</code> mouse. Hero has speed acceleration if moves to one direction. If
                 he changes it, current hero speed discard to minimum.
@@ -151,21 +150,21 @@ function generateRulesContent() {
             <h5>Buffs:</h5>
             <p>Average buff time is <code>20</code> seconds. Hero can activate buff if catches it. 
                 At the game every <code>8</code> seconds generates new buff and on the field can be only one buff
-                item. Hero can stack buffs if catches more than one. There are several
-                buffs at the game:</p>
+                item. Hero can stack buffs if catches more than one. There are several buffs at the game:</p>
             <p>
-                <img src="./img/sword.png"> - improve hero's gun size and damage.
+                <img src="./img/sword.png"> - improve hero's gun size and damage. <span class="red">Red</span> line indicator 
+                appears when hero take this buff.
             </p>
             <p>
                 <img src="./img/shoes.png"> - improve hero's speed and when the buff activated decrease speed
-                of all enemies at game field.
+                of all enemies at game field. <span class="blue">Blue</span> line indicator appears when hero take this buff.
             </p>
             <p>
-                <img src="./img/shield.png"> - make hero immortal. Smart enemies begin to run away from the hero
+                <img src="./img/shield.png"> - make hero immortal. Smart enemies begin to run away from the hero.
+                <span class="black">Black</span> line indicator appears when hero take this buff.
             </p>
             <h5>Lvl up and score:</h5>
-            <p>Every
-                <code>10</code> seconds hero reach new level. With each new level at game field
+            <p>Every <code>10</code> seconds hero reach new level. With each new level at game field
                 creates a stack of dummy enemies. Amount of creatures at the stack
                 is equalent to the new level. Also every new level the size of creatures
                 and speed of dummy enemies increases. Score is equalent to the time
