@@ -31,7 +31,7 @@ const routes = [
     match: 'scores',
     onEnter: () => {
       changeActivePage('scores');
-      gameContainer.innerHTML = '<div class="arena"><div class="lds-ripple"><div></div><div></div></div></div>';
+      showSpinner();
       requestTimer = setTimeout(() => getScoreFromDatabase()
         .then(res => gameContainer.innerHTML = generateScoreContent(res)), 1000)
     },
@@ -59,6 +59,10 @@ const routes = [
     }
   },
 ]
+
+function showSpinner() {
+  gameContainer.innerHTML = '<div class="arena"><div class="lds-ripple"><div></div><div></div></div></div>';
+}
 
 function changeActivePage(newPage) {
   document.querySelector(`[href="#${newPage}"]`).classList.add('active');
