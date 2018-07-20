@@ -93,7 +93,7 @@ export class Game {
         return newArray;
       }
       const secondEnemy = this.smartEnemies.find(enemy => ifUnitsTouchEachOther(enemy, currentEnemy) && (enemy !== currentEnemy))
-      if (secondEnemy) {
+      if (secondEnemy && !secondEnemy.isMaxSize && !currentEnemy.isMaxSize) {
         currentEnemy.eat(secondEnemy);
       }
       newArray.push(currentEnemy);

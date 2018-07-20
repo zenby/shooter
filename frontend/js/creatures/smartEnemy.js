@@ -64,13 +64,18 @@ export class SmartEnemy extends Unit {
     const mass1 = this.width * this.height;
     const mass2 = unit.width * unit.height
     const k = Math.pow((mass1 + mass2) / mass1, 0.5)
-    this.width *= k;
-    this.height *= k;
+    this.width = Math.max(this.width * k, smartEnemyParams.maxSize);
+    this.height = Math.max(this.height * k, smartEnemyParams.maxSize);
     this.defense = Math.max(this.defense, unit.defense) + defenseIncrease;
     let maxSpeed = Math.max(this.speed, unit.speed);
     this.speed = maxSpeed > defaultSpeed ? maxSpeed += speedIncrease : defaultSpeed;
     this.x = (this.x * mass1 + unit.x * mass2) / (mass1 + mass2);
     this.y = (this.y * mass1 + unit.y * mass2) / (mass1 + mass2);
+  }
+
+  isMaxSize() {
+    const { maxSize } = smartEnemyParams
+    return this.width === maxSize && this.height === maxSize
   }
 }
 

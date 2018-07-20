@@ -36,7 +36,8 @@ export const smartEnemyParams = {
     font: "13px Arial"
   },
   defenseIncrease: 3,
-  speedIncrease: 0.1
+  speedIncrease: 0.1,
+  maxSize: 100
 }
 
 export const dummyEnemyParams = {
