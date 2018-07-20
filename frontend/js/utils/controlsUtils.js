@@ -42,6 +42,7 @@ function subsribeToMove(hero) {
         break;
       }
       case 17: {
+        hero.speed = 0;
         dir.x = 0;
         dir.y = 0;
         break;
@@ -55,7 +56,9 @@ function subsribeToMove(hero) {
 function changeSpeedIfHeroChangedDirection(previousKeyCode, newKeyCode, hero) {
   if (previousKeyCode !== newKeyCode) {
     hero.makeHeroSpeedParamsDefault();
-    hero.setNewSpeedTimer();
+    if (newKeyCode !== 17) {
+      hero.setNewSpeedTimer();
+    }
     return newKeyCode;
   } else {
     return previousKeyCode;

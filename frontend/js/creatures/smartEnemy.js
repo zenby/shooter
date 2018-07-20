@@ -90,7 +90,7 @@ function getFearParams(unit, isFear) {
     return {
       distance: smartEnemyParams.visibilityDistance,
       isFear: -1,
-      message: !unit.isMaxSize() ? 'Don\'t fear, I\'m on the diet!' : 'I see you!'
+      message: unit.isMaxSize() ? 'Don\'t fear, I\'m on the diet!' : 'I see you!'
     }
   }
 }

@@ -10,7 +10,7 @@ export function addSnapshotToReplay(units, time, hero, dummyEnemies, smartEnemie
 function getReplaySnapshotObject(time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl) {
   return {
     time: time,
-    hero: { unit: hero, posX: ~~hero.x, posY: ~~hero.y, spriteX: hero.sprite.x, spriteY: hero.sprite.y },
+    hero: { unit: hero, posX: ~~hero.x, posY: ~~hero.y, spriteX: hero.sprite.x, spriteY: hero.sprite.y, speed: hero.speed },
     dummyEnemies: getReplayItemsArray(dummyEnemies),
     smartEnemies: getReplayItemsArray(smartEnemies),
     heroBullets: getReplayItemsArray(heroBullets),
@@ -46,6 +46,8 @@ export function showReplay(replay, ctx) {
 
 function updateSpritesFromReplaySnapshot(snapshot) {
   const { hero, dummyEnemies, smartEnemies, lvl } = snapshot;
+  const speedLabel = document.querySelector('.speed');
+  speedLabel.innerHTML = ~~(hero.speed * 100) / 100;
   const units = [hero, ...dummyEnemies, ...smartEnemies];
   units.forEach(replayItem => replayItem.unit.setNextSprite());
   updateLevelLabel(lvl);
@@ -58,6 +60,7 @@ function updateUnitsPositionFromReplaySnapshot(ctx, snapshot) {
   updateUnitPosition(hero);
   hero.unit.sprite.x = hero.spriteX;
   hero.unit.sprite.y = hero.spriteY;
+  hero.unit.speed = hero.speed;
   hero.unit.newPos().update(ctx);
   updateReplayItemsArray(ctx, dummyEnemies);
   updateReplayItemsArray(ctx, smartEnemies, hero.unit);
