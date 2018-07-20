@@ -22,11 +22,11 @@ export class Bullet extends Unit {
   update(ctx) {
     ctx.beginPath();
     ctx.fillStyle = this.color;
-    ctx.arc(this.x, this.y, currentBullet.size, 0, 2 * Math.PI, true);
+    ctx.arc(this.x, this.y, this.width, 0, 2 * Math.PI, true);
     ctx.fill();
     ctx.beginPath();
     ctx.fillStyle = bulletParams.colorSecond;
-    ctx.arc(this.x + 2, this.y + 2, currentBullet.size / 2, 0, 2 * Math.PI, true);
+    ctx.arc(this.x + 2, this.y + 2, this.width / 2, 0, 2 * Math.PI, true);
     ctx.fill();
     return this;
   }
