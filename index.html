@@ -14,12 +14,13 @@
 <body>
     <div class="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand">Super killer game</a>
-            <div class="collapse navbar-collapse">
+            <a class="navbar-brand">Shooter game</a>
+            <div class="navbar-collapse">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="#">Rules</a>
-                    <a class="nav-item nav-link" href="#">Best scores</a>
-                    <a class="nav-item nav-link" href="#">Author</a>
+                    <a class="nav-item nav-link" href="#game">Game</a>
+                    <a class="nav-item nav-link" href="#scores">Best scores</a>
+                    <a class="nav-item nav-link" href="#rules">Rules</a>
+                    <a class="nav-item nav-link" href="#author">Author</a>
                 </div>
             </div>
         </nav>
@@ -34,26 +35,8 @@
             <img src="./img/shield.png" class="shield">
             <img src="./img/landscape.png" class="landscape">
         </div>
-        <div class="game-container" style="user-select: none;">
-            <div class="level-container">
-                Level:
-                <span class="level">1</span>
-            </div>
-            <div class="score-container">
-                Score:
-                <span class="score">0</span>
-            </div>
-            <div class="speed-container">
-                Speed:
-                <span class="speed">0</span>
-            </div>
-            <div class="replay-container">
-                <button class="btn">Show replay</button>
-            </div>
-            <canvas></canvas>
-        </div>
+        <div class="game-container" style="user-select: none;"></div>   
     </div>
-
     <script src="app.js" type="text/javascript"></script>
 </body>
 
