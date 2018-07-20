@@ -27,16 +27,16 @@ function getReplayItemsArray(array) {
 export function showReplay(replay, ctx) {
   let frame = 0;
 
-  const spriteTimer = setInterval(() => {
+  replay.spriteTimer = setInterval(() => {
     updateSpritesFromReplaySnapshot(replay.units[frame]);
   }, intervals.updateSprites)
 
-  const posititionTimer = setInterval(() => {
+  replay.positionTimer = setInterval(() => {
     updateUnitsPositionFromReplaySnapshot(ctx, replay.units[frame]);
     frame++;
     if (frame === replay.units.length - 1) {
-      clearInterval(spriteTimer);
-      clearInterval(posititionTimer);
+      clearInterval(replay.spriteTimer);
+      clearInterval(replay.positionTimer);
       hideReplayButton();
       initializeGame();
     }

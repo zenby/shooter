@@ -22,18 +22,14 @@ const routes = [
     },
     onLeave: () => {
       changeStyleToInformationDisplay();
-      game.stopGameAndClearState();
+      unsubscribeAndClearCurrentGameState();
       removeActivePage('game');
-      document.removeEventListener('keydown', initializeGame)
-      document.removeEventListener('keydown', startGame)
     }
   }, {
     match: 'scores',
     onEnter: () => {
       changeActivePage('scores');
-      showSpinner();
-      requestTimer = setTimeout(() => getScoreFromDatabase()
-        .then(res => gameContainer.innerHTML = generateScoreContent(res)), 1000)
+      requestTimer = simulateLongHttpRequest();
     },
     onLeave: () => {
       clearInterval(requestTimer);
@@ -60,8 +56,20 @@ const routes = [
   },
 ]
 
-function showSpinner() {
+function unsubscribeAndClearCurrentGameState() {
+  game.stopGameAndClearState();
+  clearInterval(game.replay.spriteTimer);
+  clearInterval(game.replay.positionTimer);
+  document.removeEventListener('keydown', initializeGame)
+  document.removeEventListener('keydown', startGame)
+}
+
+function simulateLongHttpRequest() {
   gameContainer.innerHTML = '<div class="arena"><div class="lds-ripple"><div></div><div></div></div></div>';
+  return setTimeout(() =>
+    getScoreFromDatabase()
+      .then(res => gameContainer.innerHTML = generateScoreContent(res))
+    , 1000)
 }
 
 function changeActivePage(newPage) {
