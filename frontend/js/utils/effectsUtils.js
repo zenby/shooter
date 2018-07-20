@@ -1,6 +1,7 @@
 import { currentBullet } from '../creatures/bullet'
 import { buffParams, bulletParams } from '../constants';
 import { ifUnitsTouchEachOther } from './geometryUtils';
+import { buffTypes } from '../items/buffs/buffGenerator';
 
 export function shouldEnemyDieIfBulletHitsHim(enemy, bullet) {
   const isContact = ifUnitsTouchEachOther(enemy, bullet)
@@ -50,6 +51,8 @@ function addBuffTimerToHero(hero, id) {
     if (buff.time >= buffParams.buffTime / 1000) {
       clearInterval(buff.timer);
       hero.currentBuffs.shift();
+      const hasAnotherShield = hero.currentBuffs.some(buff => buff.type === buffTypes[1].color)
+      hero.isImmortal = hasAnotherShield;
     }
   }, 1000)
 }

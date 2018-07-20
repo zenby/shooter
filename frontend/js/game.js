@@ -142,7 +142,6 @@ export class Game {
     showReplayButton();
     showLoseMessage();
     subscribeToShowReplay(() => showReplay(this.replay, this.ctx));
-
     document.addEventListener('keydown', initializeGame, { once: true });
   }
 
