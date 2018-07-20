@@ -25,6 +25,7 @@ function getReplayItemsArray(array) {
 }
 
 export function showReplay(replay, ctx) {
+  document.removeEventListener('keydown', initializeGame)
   let frame = 0;
 
   replay.spriteTimer = setInterval(() => {

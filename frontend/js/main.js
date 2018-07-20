@@ -6,11 +6,10 @@ import routes from './routes';
 
 export let game;
 
-// initializeGame();
-
 export function initializeGame() {
   const canvas = document.querySelector("canvas");
   hideReplayButton();
+
   game = new Game(canvas);
   document.addEventListener('keydown', startGame, { once: true });
 }
