@@ -37,7 +37,9 @@ export const smartEnemyParams = {
   },
   defenseIncrease: 3,
   speedIncrease: 0.1,
-  maxSize: 100
+  maxSize: 100,
+  fearDistance: 300,
+  visibilityDistance: 200
 }
 
 export const dummyEnemyParams = {

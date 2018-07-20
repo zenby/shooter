@@ -82,13 +82,13 @@ export class SmartEnemy extends Unit {
 function getFearParams(unit, isFear) {
   if (isFear) {
     return {
-      distance: 300,
+      distance: smartEnemyParams.fearDistance,
       isFear: 1,
       message: 'You don\'t catch me!'
     }
   } else {
     return {
-      distance: 200,
+      distance: smartEnemyParams.visibilityDistance,
       isFear: -1,
       message: !unit.isMaxSize() ? 'Don\'t fear, I\'m on the diet!' : 'I see you!'
     }
