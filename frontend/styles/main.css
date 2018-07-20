@@ -57,7 +57,10 @@ canvas {
     color: red;
     font-weight: 600;
 }
-
+.label-icon{
+    width: 200px;
+    color: yellow;
+}
 
 .lds-ripple {
     display: inline-block;
