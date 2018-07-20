@@ -1,4 +1,3 @@
-const canvas = document.querySelector('canvas');
 
 export function addHeroControls(hero, createBullet) {
   subsribeToMove(hero);
@@ -6,6 +5,7 @@ export function addHeroControls(hero, createBullet) {
 }
 
 function subscribeToShoot(createBullet) {
+  const canvas = document.querySelector('canvas');
   canvas.addEventListener('click', event => {
     createBullet(event.offsetX, event.offsetY);
   })

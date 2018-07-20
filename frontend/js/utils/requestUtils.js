@@ -1,5 +1,4 @@
 const URL = 'https://shooter-game-2a1be.firebaseio.com/statistics/.json';
-let bestScores = [];
 
 export function sendResultToDatabase(score, name) {
   fetch(URL, {
@@ -9,16 +8,13 @@ export function sendResultToDatabase(score, name) {
 }
 
 export function getScoreFromDatabase() {
-  fetch(`${URL}?orderBy=\"score\"&limitToLast=8`, { method: 'GET' })
+  return fetch(`${URL}?orderBy=\"score\"&limitToLast=8`, { method: 'GET' })
     .then(response => response.json())
-    .then(data => {
-      bestScores = getTop10(data);
-      console.log(bestScores);
-    })
-    .catch(() => console.log('misterious error'))
+    .then(data => getTop8(data))
+    .catch(() => console.log('server error'))
 }
 
-export function getTop10(data) {
+export function getTop8(data) {
   const array = Object.values(data);
   return array.sort((a, b) => a.score < b.score);
 }

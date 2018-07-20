@@ -138,14 +138,15 @@ export class Game {
   }
 
   finishGame() {
+    this.stopGameAndClearState();
     showReplayButton();
-    this.clearPreviousGameState();
     showLoseMessage();
     subscribeToShowReplay(() => showReplay(this.replay, this.ctx));
+
     document.addEventListener('keydown', initializeGame, { once: true });
   }
 
-  clearPreviousGameState() {
+  stopGameAndClearState() {
     this.timers.map(timer => clearInterval(timer));
     this.hero.currentBuffs.map(buff => clearInterval(buff.timer));
     makeBulletDefault();
@@ -159,7 +160,6 @@ export class Game {
   }
 
   lvlUp() {
-    this.addEnemyStack(this.smartEnemies, SmartEnemy, BASE_SMART_SIZE);
     this.addEnemyStack(this.dummyEnemies, DummyEnemy, BASE_DUMMY_SIZE);
     this.lvl++;
     updateLevelLabel(this.lvl);

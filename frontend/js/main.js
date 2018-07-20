@@ -1,27 +1,23 @@
 import { Game } from "./game";
-import { getScoreFromDatabase } from './utils/requestUtils';
+
 import { hideReplayButton } from './utils/userUtils';
+import Router from './utils/router';
+import routes from './routes';
 
-let game;
-const canvas = document.querySelector("canvas");
-const scoreLabel = document.querySelector(".score");
-const speedLabel = document.querySelector('.speed');
-const levelLabel = document.querySelector('.level');
+export let game;
 
-initializeGame();
+// initializeGame();
 
 export function initializeGame() {
-  getScoreFromDatabase();
+  const canvas = document.querySelector("canvas");
   hideReplayButton();
   game = new Game(canvas);
-  scoreLabel.innerHTML = 0;
-  speedLabel.innerHTML = 0;
-  levelLabel.innerHTML = 1;
   document.addEventListener('keydown', startGame, { once: true });
 }
 
-function startGame() {
+export function startGame() {
   game.start();
 }
 
+new Router(routes);
 

@@ -8,7 +8,6 @@ const velocity = {
 }
 
 const img = document.querySelector('.hero-sprite');
-const speedLabel = document.querySelector('.speed');
 
 export class Hero extends Unit {
   constructor(ctx, width = heroParams.width, height = heroParams.height, x = heroParams.posX, y = heroParams.posY, alfaX = 1, alfaY = 0, speed = velocity.speed) {
@@ -39,6 +38,7 @@ export class Hero extends Unit {
   }
 
   update(ctx) {
+    const speedLabel = document.querySelector('.speed');
     speedLabel.innerHTML = ~~(this.speed * 100) / 100;
     const { sprite, x, y, width, height } = this
     ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
