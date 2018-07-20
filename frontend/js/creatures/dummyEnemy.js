@@ -30,13 +30,13 @@ export class DummyEnemy extends Unit {
   }
 
   update(ctx) {
-    const { sprite, x, y, width, height } = this
-    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
+    const { sprite, x, y, width, height } = this;
+    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
     return this;
   }
 
   getSpriteLayerValue(x, y) {
-    const { spriteLayer } = dummyEnemyParams
+    const { spriteLayer } = dummyEnemyParams;
     if (Math.abs(x) > Math.abs(y)) {
       return x > 0 ? spriteLayer.right : spriteLayer.left;
     } else {

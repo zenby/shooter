@@ -1,16 +1,16 @@
-import { Hero } from "./creatures/hero";
+import { initializeGame } from './main';
+import { addSnapshotToReplay, showReplay } from './replay';
+import { shouldEnemyDieIfBulletHitsHim } from './utils/effectsUtils';
+import { addHeroControls } from "./utils/controlsUtils";
+import { clearCanvas } from './utils/canvasUtils';
+import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometryUtils";
+import { updateLevelLabel, showReplayButton, updateScoreLabel, showLoseMessage, subscribeToShowReplay } from './utils/userUtils';
 import { DummyEnemy, BASE_DUMMY_SIZE, SPEED as DUMMY_SPEAD } from "./creatures/dummyEnemy";
 import { SmartEnemy, BASE_SMART_SIZE } from "./creatures/smartEnemy";
-import { addHeroControls } from "./utils/controlsUtils";
-import { isDistanceBetweenUnitsMoreThanSafe, ifUnitsTouchEachOther, getCenterCoordinates, getElementsInsideCanvas } from "./utils/geometryUtils";
-import { clearCanvas } from './utils/canvasUtils';
 import { Bullet, makeBulletDefault } from "./creatures/bullet";
+import { Hero } from "./creatures/hero";
 import { RandomBuff } from './items/buffs/buffGenerator';
-import { initializeGame } from './main';
-import { updateLevelLabel, showReplayButton, updateScoreLabel, showLoseMessage, subscribeToShowReplay } from './utils/userUtils';
 import { Landscape } from './items/landscape';
-import { shouldEnemyDieIfBulletHitsHim } from './utils/effectsUtils';
-import { addSnapshotToReplay, showReplay } from './replay';
 import { intervals, lvlBuffs } from './constants';
 
 export class Game {

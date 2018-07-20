@@ -13,7 +13,7 @@ export const heroParams = {
 
 export const buffParams = {
   buffTime: 20000,
-  speedGrowth: 2,
+  speedGrowth: 1.6,
 }
 
 export const bulletParams = {
@@ -23,7 +23,7 @@ export const bulletParams = {
   damage: 35,
   speedDecrease: 0.10,
   growAfterBuff: 2,
-  minDamage: 6,
+  minDamage: 10,
   minCreatureSize: 25
 }
 
@@ -59,7 +59,7 @@ export const intervals = {
   addSmartEnemy: 3000,
   addDummyEnemy: 4000,
   addBuffItem: 8000,
-  lvlUp: 10000
+  lvlUp: 13000
 }
 
 export const lvlBuffs = {

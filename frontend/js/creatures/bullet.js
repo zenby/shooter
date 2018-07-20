@@ -10,7 +10,7 @@ export const currentBullet = {
 export class Bullet extends Unit {
   constructor(ctx, x, y, alfaX, alfaY, width = currentBullet.size, height = currentBullet.size, speed = bulletParams.speed, color = bulletParams.color) {
     super(ctx, width, height, x - currentBullet.size / 2, y - currentBullet.size / 2, alfaX, alfaY, speed);
-    this.color = color
+    this.color = color;
   }
 
   newPos() {

@@ -3,7 +3,7 @@ import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../uti
 import { smartEnemyParams } from '../constants';
 
 export const BASE_SMART_SIZE = smartEnemyParams.size;
-const img = document.querySelector('.smart-enemy-sprite')
+const img = document.querySelector('.smart-enemy-sprite');
 
 export class SmartEnemy extends Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed = smartEnemyParams.speed) {
@@ -23,7 +23,7 @@ export class SmartEnemy extends Unit {
 
   setNextSprite() {
     if (this.sprite.x < 48) {
-      this.sprite.x += this.sprite.deltaX
+      this.sprite.x += this.sprite.deltaX;
     } else {
       this.sprite.x = this.sprite.baseX;
     }
@@ -36,8 +36,8 @@ export class SmartEnemy extends Unit {
   }
 
   update(ctx) {
-    const { sprite, x, y, width, height } = this
-    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
+    const { sprite, x, y, width, height } = this;
+    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
     return this;
   }
 
@@ -62,8 +62,8 @@ export class SmartEnemy extends Unit {
     const { defenseIncrease, speedIncrease } = smartEnemyParams;
     const defaultSpeed = smartEnemyParams.speed;
     const mass1 = this.width * this.height;
-    const mass2 = unit.width * unit.height
-    const k = Math.pow((mass1 + mass2) / mass1, 0.5)
+    const mass2 = unit.width * unit.height;
+    const k = Math.pow((mass1 + mass2) / mass1, 0.5);
     this.width = Math.max(this.width * k, smartEnemyParams.maxSize);
     this.height = Math.max(this.height * k, smartEnemyParams.maxSize);
     this.defense = Math.max(this.defense, unit.defense) + defenseIncrease;
@@ -74,8 +74,8 @@ export class SmartEnemy extends Unit {
   }
 
   isMaxSize() {
-    const { maxSize } = smartEnemyParams
-    return this.width === maxSize && this.height === maxSize
+    const { maxSize } = smartEnemyParams;
+    return this.width === maxSize && this.height === maxSize;
   }
 }
 

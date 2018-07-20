@@ -31,16 +31,16 @@ export class Hero extends Unit {
 
   setNextSprite() {
     if (this.sprite.y < 96) {
-      this.sprite.y += this.sprite.deltaY
+      this.sprite.y += this.sprite.deltaY;
     } else {
       this.sprite.y = this.sprite.baseY;
     }
   }
 
   update(ctx) {
+    const { sprite, x, y, width, height } = this;
     const speedLabel = document.querySelector('.speed');
     speedLabel.innerHTML = ~~(this.speed * 100) / 100;
-    const { sprite, x, y, width, height } = this
     ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
     return this;
   }
@@ -64,7 +64,7 @@ export class Hero extends Unit {
       this.accelerationStartTime += 50;
       this.speed = startSpeed + velocity.acceleration * this.accelerationStartTime;
       if (this.accelerationStartTime >= velocity.maxAccelerationTime) {
-        clearInterval(this.currentAccelerationTimer)
+        clearInterval(this.currentAccelerationTimer);
       }
     }, 50);
   }
