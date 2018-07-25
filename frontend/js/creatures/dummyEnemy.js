@@ -4,8 +4,6 @@ import { DUMMY_ENEMY_PARAMS } from '../constants';
 export const SPEED = DUMMY_ENEMY_PARAMS.speed;
 export const BASE_DUMMY_SIZE = DUMMY_ENEMY_PARAMS.size;
 
-const img = document.querySelector('.ice-demon');
-
 export class DummyEnemy extends Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SPEED) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
@@ -19,6 +17,7 @@ export class DummyEnemy extends Unit {
       deltaX: 50,
       deltaY: 50
     }
+    this.image = document.querySelector('.ice-demon');
   }
 
   setNextSprite() {
@@ -30,8 +29,8 @@ export class DummyEnemy extends Unit {
   }
 
   update(ctx) {
-    const { sprite, x, y, width, height } = this;
-    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
+    const { sprite, x, y, width, height, image } = this;
+    ctx.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
     return this;
   }
 

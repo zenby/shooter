@@ -2,7 +2,8 @@ import { initializeGame, startGame } from './main';
 import { getScoreFromDatabase } from './utils/requestUtils';
 import { game } from './main';
 
-let gameContainer = document.querySelector('.game-container');
+const spriteWrapper = document.querySelector('.sprite-wrapper');
+const gameContainer = document.querySelector('.game-container');
 
 let requestTimer;
 
@@ -17,6 +18,9 @@ const routes = [
     onEnter: () => {
       changeStyleToGameDisplay();
       changeActivePage('game');
+      if (!spriteWrapper.innerHTML) {
+        spriteWrapper.innerHTML = generateSpriteContent();
+      }
       gameContainer.innerHTML = generateGameContent();
       initializeGame();
     },
@@ -105,6 +109,18 @@ function generateScoreContent(scores) {
               ${listItems}
             </ul>
           </div>`;
+}
+
+function generateSpriteContent(element) {
+  return `
+    <img src="./img/hero.png" class="hero-sprite">
+    <img src="./img/sword.png" class="sword">
+    <img src="./img/shoes.png" class="shoes">
+    <img src="./img/shield.png" class="shield">
+    <img src="./img/landscape.png" class="landscape">
+    <img src="./img/ice-demon.png" class="ice-demon">
+    <img src="./img/mashroom.png" class="mashroom">
+  `
 }
 
 function generateGameContent() {

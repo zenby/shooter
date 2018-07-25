@@ -7,8 +7,6 @@ const velocity = {
   maxAccelerationTime: 3000
 }
 
-const img = document.querySelector('.hero-sprite');
-
 export class Hero extends Unit {
   constructor(ctx, width = HERO_PARAMS.width, height = HERO_PARAMS.height, x = HERO_PARAMS.posX, y = HERO_PARAMS.posY, alfaX = 0, alfaY = 1, speed = velocity.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
@@ -16,7 +14,6 @@ export class Hero extends Unit {
     this.accelerationStartTime = 0;
     this.currentAccelerationTimer = '';
     this.currentBuffs = []
-
     this.sprite = {
       baseX: 2,
       baseY: 1,
@@ -27,6 +24,7 @@ export class Hero extends Unit {
       deltaX: 32,
       deltaY: 32
     }
+    this.image = document.querySelector('.hero-sprite');
   }
 
   setNextSprite() {
@@ -38,10 +36,10 @@ export class Hero extends Unit {
   }
 
   update(ctx) {
-    const { sprite, x, y, width, height } = this;
+    const { sprite, x, y, width, height, image } = this;
     const speedLabel = document.querySelector('.speed');
     speedLabel.innerHTML = ~~(this.speed * 100) / 100;
-    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
+    ctx.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height)
     return this;
   }
 

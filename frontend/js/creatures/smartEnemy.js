@@ -3,7 +3,6 @@ import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../uti
 import { SMART_ENEMY_PARAMS } from '../constants';
 
 export const BASE_SMART_SIZE = SMART_ENEMY_PARAMS.size;
-const img = document.querySelector('.mashroom');
 
 export class SmartEnemy extends Unit {
   constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SMART_ENEMY_PARAMS.speed) {
@@ -18,6 +17,7 @@ export class SmartEnemy extends Unit {
       deltaX: 48,
       deltaY: 48
     }
+    this.image = document.querySelector('.mashroom');
     this.defense = 0;
   }
 
@@ -37,8 +37,8 @@ export class SmartEnemy extends Unit {
   }
 
   update(ctx) {
-    const { sprite, x, y, width, height } = this;
-    ctx.drawImage(img, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
+    const { sprite, x, y, width, height, image } = this;
+    ctx.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height, x, y, width, height);
     return this;
   }
 

@@ -7,6 +7,16 @@
     align-items: center;
 }
 
+.game-container {
+    user-select: none;
+}
+
+.sprite-wrapper {
+    left: -3000px; 
+    top: -3000px; 
+    position: absolute;
+}
+
 canvas {
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
     cursor: url("Aim.ico"), pointer;
