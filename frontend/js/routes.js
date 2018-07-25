@@ -4,6 +4,15 @@ import { game } from './main';
 
 const spriteWrapper = document.querySelector('.sprite-wrapper');
 const gameContainer = document.querySelector('.game-container');
+const imageDataArray = [
+  { src: "./img/hero.png", className: "hero-sprite" },
+  { src: "./img/sword.png", className: "sword" },
+  { src: "./img/shoes.png", className: "shoes" },
+  { src: "./img/shield.png", className: "shield" },
+  { src: "./img/landscape.png", className: "landscape" },
+  { src: "./img/ice-demon.png", className: "ice-demon" },
+  { src: "./img/mashroom.png", className: "mashroom" }
+]
 
 let requestTimer;
 
@@ -18,11 +27,12 @@ const routes = [
     onEnter: () => {
       changeStyleToGameDisplay();
       changeActivePage('game');
-      if (!spriteWrapper.innerHTML) {
-        spriteWrapper.innerHTML = generateSpriteContent();
-      }
       gameContainer.innerHTML = generateGameContent();
-      initializeGame();
+      if (!spriteWrapper.innerHTML) {
+        addSpriteContentAndInitializeGame(spriteWrapper, initializeGame);
+      } else {
+        initializeGame();
+      }
     },
     onLeave: () => {
       changeStyleToInformationDisplay();
@@ -111,16 +121,20 @@ function generateScoreContent(scores) {
           </div>`;
 }
 
-function generateSpriteContent(element) {
-  return `
-    <img src="./img/hero.png" class="hero-sprite">
-    <img src="./img/sword.png" class="sword">
-    <img src="./img/shoes.png" class="shoes">
-    <img src="./img/shield.png" class="shield">
-    <img src="./img/landscape.png" class="landscape">
-    <img src="./img/ice-demon.png" class="ice-demon">
-    <img src="./img/mashroom.png" class="mashroom">
-  `
+function addSpriteContentAndInitializeGame(container, cb) {
+  let loadCounter = 0;
+  imageDataArray.forEach(img => {
+    const newImage = new Image();
+    newImage.className = img.className;
+    newImage.src = img.src;
+    newImage.onload = () => {
+      loadCounter++
+      if (loadCounter === imageDataArray.length) {
+        cb();
+      }
+    };
+    container.appendChild(newImage);
+  })
 }
 
 function generateGameContent() {
