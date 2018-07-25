@@ -1,5 +1,5 @@
 import { Unit } from "./unit";
-import { heroParams, buffParams } from '../constants';
+import { HERO_PARAMS, BUFF_PARAMS } from '../constants';
 
 const velocity = {
   speed: 1,
@@ -10,7 +10,7 @@ const velocity = {
 const img = document.querySelector('.hero-sprite');
 
 export class Hero extends Unit {
-  constructor(ctx, width = heroParams.width, height = heroParams.height, x = heroParams.posX, y = heroParams.posY, alfaX = 0, alfaY = 1, speed = velocity.speed) {
+  constructor(ctx, width = HERO_PARAMS.width, height = HERO_PARAMS.height, x = HERO_PARAMS.posX, y = HERO_PARAMS.posY, alfaX = 0, alfaY = 1, speed = velocity.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.isImmortal = false;
     this.accelerationStartTime = 0;
@@ -46,7 +46,7 @@ export class Hero extends Unit {
   }
 
   updateSpriteDirection(direction) {
-    this.sprite.y = this.sprite.baseY + heroParams.spriteLayer[direction] * this.sprite.deltaY
+    this.sprite.y = this.sprite.baseY + HERO_PARAMS.spriteLayer[direction] * this.sprite.deltaY
   }
 
   makeHeroSpeedParamsDefault() {
@@ -70,7 +70,7 @@ export class Hero extends Unit {
   }
 
   drawBuffs(ctx) {
-    const allTime = buffParams.buffTime / 1000;
+    const allTime = BUFF_PARAMS.buffTime / 1000;
     this.currentBuffs.forEach((buff, index) => {
       ctx.fillStyle = buff.type;
       ctx.fillRect(this.x, this.y - 10 - index * 10, this.width * (allTime - buff.time) / allTime, 7);
@@ -79,13 +79,13 @@ export class Hero extends Unit {
   }
 }
 
-export function increaseHeroVelocityByBuff(buff = buffParams.speedGrowth) {
+export function increaseHeroVelocityByBuff(buff = BUFF_PARAMS.speedGrowth) {
   velocity.speed *= buff;
   velocity.acceleration *= buff;
   velocity.maxAccelerationTime *= buff;
 }
 
-export function decreaseHeroVelocityByDebuff(deBuff = buffParams.speedGrowth) {
+export function decreaseHeroVelocityByDebuff(deBuff = BUFF_PARAMS.speedGrowth) {
   velocity.speed /= deBuff;
   velocity.acceleration /= deBuff;
   velocity.maxAccelerationTime /= deBuff;

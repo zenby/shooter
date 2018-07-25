@@ -1,7 +1,7 @@
 import { initializeGame } from './main';
 import { hideReplayButton, updateLevelLabel } from './utils/userUtils';
 import { clearCanvas } from './utils/canvasUtils';
-import { intervals } from './constants';
+import { INTERVALS } from './constants';
 
 export function addSnapshotToReplay(units, time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl) {
   units.push(getReplaySnapshotObject(time, hero, dummyEnemies, smartEnemies, heroBullets, buffItem, lvl))
@@ -30,7 +30,7 @@ export function showReplay(replay, ctx) {
 
   replay.spriteTimer = setInterval(() => {
     updateSpritesFromReplaySnapshot(replay.units[frame]);
-  }, intervals.updateSprites)
+  }, INTERVALS.updateSprites)
 
   replay.positionTimer = setInterval(() => {
     updateUnitsPositionFromReplaySnapshot(ctx, replay.units[frame], replay.landscape);
@@ -41,7 +41,7 @@ export function showReplay(replay, ctx) {
       hideReplayButton();
       initializeGame();
     }
-  }, intervals.updateGameState);
+  }, INTERVALS.updateGameState);
 }
 
 function updateSpritesFromReplaySnapshot(snapshot) {

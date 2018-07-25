@@ -2,7 +2,7 @@ import { Item } from './item';
 import { increaseHeroVelocityByBuff, decreaseHeroVelocityByDebuff } from '../../creatures/hero';
 import { addBuffIndicator } from '../../utils/effectsUtils'
 import { buffTypes } from './buffGenerator';
-import { buffParams } from '../../constants';
+import { BUFF_PARAMS } from '../../constants';
 
 export class Shoes extends Item {
   constructor(ctx, width, height, x, y, type) {
@@ -19,7 +19,7 @@ export class Shoes extends Item {
     const timer = setTimeout(() => {
       decreaseHeroVelocityByDebuff();
       enemies.forEach(enemy => enemy.speed *= value);
-    }, buffParams.buffTime)
+    }, BUFF_PARAMS.buffTime)
     gameObject.timers.push(timer);
   }
 }

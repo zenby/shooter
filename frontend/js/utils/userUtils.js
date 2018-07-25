@@ -1,4 +1,4 @@
-import { intervals } from '../constants';
+import { INTERVALS } from '../constants';
 import { sendResultToDatabase } from './requestUtils';
 
 export function updateLevelLabel(lvl) {
@@ -12,11 +12,11 @@ export function showReplayButton() {
 }
 
 export function updateScoreLabel(currentTime, startTime) {
-  currentTime += intervals.updateGameState;
+  currentTime += INTERVALS.updateGameState;
   const value = (currentTime - startTime) / 10;
   const scoreLabel = document.querySelector(".score");
   scoreLabel.innerHTML = value;
-  return currentTime + intervals.updateGameState;
+  return currentTime + INTERVALS.updateGameState;
 }
 
 export function showLoseMessage() {

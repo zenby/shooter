@@ -1,8 +1,8 @@
 import { Unit } from "./unit";
-import { dummyEnemyParams } from '../constants';
+import { DUMMY_ENEMY_PARAMS } from '../constants';
 
-export const SPEED = dummyEnemyParams.speed;
-export const BASE_DUMMY_SIZE = dummyEnemyParams.size;
+export const SPEED = DUMMY_ENEMY_PARAMS.speed;
+export const BASE_DUMMY_SIZE = DUMMY_ENEMY_PARAMS.size;
 
 const img = document.querySelector('.ice-demon');
 
@@ -36,7 +36,7 @@ export class DummyEnemy extends Unit {
   }
 
   getSpriteLayerValue(x, y) {
-    const { spriteLayer } = dummyEnemyParams;
+    const { spriteLayer } = DUMMY_ENEMY_PARAMS;
     if (Math.abs(x) > Math.abs(y)) {
       return x > 0 ? spriteLayer.right : spriteLayer.left;
     } else {

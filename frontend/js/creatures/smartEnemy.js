@@ -1,12 +1,12 @@
 import { Unit } from "./unit";
 import { getCenterCoordinates, isDistanceBetweenUnitsMoreThanSafe } from "../utils/geometryUtils";
-import { smartEnemyParams } from '../constants';
+import { SMART_ENEMY_PARAMS } from '../constants';
 
-export const BASE_SMART_SIZE = smartEnemyParams.size;
+export const BASE_SMART_SIZE = SMART_ENEMY_PARAMS.size;
 const img = document.querySelector('.mashroom');
 
 export class SmartEnemy extends Unit {
-  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = smartEnemyParams.speed) {
+  constructor(ctx, width, height, x, y, alfaX, alfaY, speed = SMART_ENEMY_PARAMS.speed) {
     super(ctx, width, height, x, y, alfaX, alfaY, speed);
     this.sprite = {
       baseX: 6,
@@ -43,7 +43,7 @@ export class SmartEnemy extends Unit {
   }
 
   getSpriteLayerValue(x, y) {
-    const { spriteLayer } = smartEnemyParams;
+    const { spriteLayer } = SMART_ENEMY_PARAMS;
     if (Math.abs(x) > Math.abs(y)) {
       return x > 0 ? spriteLayer.right : spriteLayer.left;
     } else {
@@ -52,7 +52,7 @@ export class SmartEnemy extends Unit {
   }
 
   showWarningMessage(text) {
-    const { message } = smartEnemyParams;
+    const { message } = SMART_ENEMY_PARAMS;
     this.ctx.font = message.font;
     this.ctx.strokeText(text, this.x + message.x, this.y - message.y);
   }
@@ -69,8 +69,8 @@ export class SmartEnemy extends Unit {
   }
 
   eat(unit) {
-    const { defenseIncrease, speedIncrease } = smartEnemyParams;
-    const defaultSpeed = smartEnemyParams.speed;
+    const { defenseIncrease, speedIncrease } = SMART_ENEMY_PARAMS;
+    const defaultSpeed = SMART_ENEMY_PARAMS.speed;
     const mass1 = this.width * this.height;
     const mass2 = unit.width * unit.height;
     const k = Math.pow((mass1 + mass2) / mass1, 0.5);
@@ -87,13 +87,13 @@ export class SmartEnemy extends Unit {
 function getFearParams(isFear) {
   if (isFear) {
     return {
-      distance: smartEnemyParams.fearDistance,
+      distance: SMART_ENEMY_PARAMS.fearDistance,
       isFear: 1,
       message: 'You don\'t catch me!'
     }
   } else {
     return {
-      distance: smartEnemyParams.visibilityDistance,
+      distance: SMART_ENEMY_PARAMS.visibilityDistance,
       isFear: -1,
       message: 'I see you!'
     }

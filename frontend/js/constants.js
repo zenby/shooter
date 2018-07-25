@@ -1,4 +1,4 @@
-export const heroParams = {
+export const HERO_PARAMS = {
   height: 50,
   width: 30,
   posX: 50,
@@ -11,12 +11,12 @@ export const heroParams = {
   }
 }
 
-export const buffParams = {
+export const BUFF_PARAMS = {
   buffTime: 20000,
   speedGrowth: 1.6,
 }
 
-export const bulletParams = {
+export const BULLET_PARAMS = {
   speed: 10,
   color: 'red',
   colorSecond: 'yellow',
@@ -28,7 +28,7 @@ export const bulletParams = {
   minCreatureSize: 30
 }
 
-export const smartEnemyParams = {
+export const SMART_ENEMY_PARAMS = {
   speed: 0.6,
   size: 25,
   message: {
@@ -49,7 +49,7 @@ export const smartEnemyParams = {
   visibilityDistance: 200
 }
 
-export const dummyEnemyParams = {
+export const DUMMY_ENEMY_PARAMS = {
   speed: 0.8,
   size: 25,
   spriteLayer: {
@@ -60,7 +60,7 @@ export const dummyEnemyParams = {
   }
 }
 
-export const intervals = {
+export const INTERVALS = {
   updateGameState: 20,
   updateSprites: 200,
   addSmartEnemy: 3000,
@@ -69,7 +69,7 @@ export const intervals = {
   lvlUp: 13000
 }
 
-export const lvlBuffs = {
+export const LVL_BUFFS = {
   speedIncrease: 0.25,
   sizeIncrease: 2
 }
